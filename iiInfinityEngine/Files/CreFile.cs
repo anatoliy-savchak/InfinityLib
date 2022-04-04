@@ -6,11 +6,31 @@ using iiInfinityEngine.Core.Binary;
 
 namespace iiInfinityEngine.Core.Files
 {
-    //TODO: We've assumed a creature can only have level 1 innates
-    [Serializable]
     public class CreFile : IEFile
     {
-        public CreFile()
+        [NonSerialized]
+        private string checksum;
+        public string Checksum { get { return checksum; } set { checksum = value; } }
+        [NonSerialized]
+        private string filename;
+        public string Filename { get { return filename; } set { filename = value; } }
+        [NonSerialized]
+        private IEFileType fileType = IEFileType.Cre;
+        public IEFileType FileType { get { return fileType; } }
+
+        [NonSerialized]
+        private IEFile originalFile;
+        public IEFile OriginalFile { get { return originalFile; } set { originalFile = value; } }
+
+        public IEString LongName;
+        public IEString ShortName;
+    }
+
+    //TODO: We've assumed a creature can only have level 1 innates
+    [Serializable]
+    public class CreFile9 : CreFile
+    {
+        public CreFile9()
         {
             MemorisedSpells.MageLevel1 = new List<CreMemorisedSpell2>();
             MemorisedSpells.MageLevel2 = new List<CreMemorisedSpell2>();
@@ -55,22 +75,8 @@ namespace iiInfinityEngine.Core.Files
         public CreMemorisedSpells MemorisedSpells;
         public CreKnownSpells KnownSpells;
         public List<string> Feats = new List<string>();
+        public Dictionary<string, Dictionary<int, List<SpellEntry>>> Spells = new Dictionary<string, Dictionary<int, List<SpellEntry>>>();
 
-        [NonSerialized]
-        private string checksum;
-        public string Checksum { get { return checksum; } set { checksum = value; } }
-        [NonSerialized]
-        private string filename;
-        public string Filename { get { return filename; } set { filename = value; } }
-        [NonSerialized]
-        private IEFileType fileType = IEFileType.Cre;
-        public IEFileType FileType { get { return fileType; } }
-        [NonSerialized]
-        private IEFile originalFile;
-        public IEFile OriginalFile { get { return originalFile; } set { originalFile = value; } }
-
-        public IEString LongName;
-        public IEString ShortName;
         public CreatureFlags Flags;
         public Int32 XPReward;
         public Int32 PowerLevel;
@@ -275,6 +281,7 @@ namespace iiInfinityEngine.Core.Files
         public byte Alignment;
         public Int16 GlobalActorEnumeration;
         public Int16 LocalActorEnumeration;
+
         public array32 DeathVariable;
         public Int32 KnownSpellsoffset;
         public Int32 KnownSpellsCount;
@@ -384,6 +391,281 @@ namespace iiInfinityEngine.Core.Files
 
         public array32 DeathVariable2;
         public array32 DeathVariable3;
+        public Int16 IsLocationSaved;
+        public Int16 SavedLocationX;
+        public Int16 SavedLocationY;
+        public Int16 SavedOrientation;
+
+        public byte FadeAmount;
+        public byte FadeSpeed;
+        public byte Attributes;
+        public byte Visibility;
+        public byte SkillPointsRemain;
+
+        public UInt16 Class2;
+        public UInt16 ClassMsk;
+    }
+
+
+    [Serializable]
+    public class CreFile22 : CreFile
+    {
+        [NonSerialized]
+        public static readonly string[] Flags22 = {
+            "No flags set", "Damage don't stop casting", "No corpse", "Permanent corpse",
+            null, null, null, null, null, null, "Fallen paladin", "Fallen ranger",
+            "Export allowed", null, "Quest critical", "Can activate non-NPC triggers", "Enabled",
+            "Seen party", "Invulnerable", "Non threatening enemy", "No talk", "Ignore return to start", "Ignore inhibit AI",
+            null, null, "Allegiance tracking", "General tracking", "Race tracking", "Class tracking",
+            "Specifics tracking", "Gender tracking", "Alignment tracking", "Corpse related?" 
+        };
+
+        public List<string> Feats = new List<string>();
+        public Dictionary<string, Dictionary<int, List<SpellEntry>>> Spells = new Dictionary<string, Dictionary<int, List<SpellEntry>>>();
+
+        //public IEString LongName;
+        //public IEString ShortName;
+        public UInt32 flags;
+        public string[] Flags { get {
+                List<string> result = new List<string>();
+                for (int off = 0; off < 32; off++)
+                {
+                    if ((flags & (1 << off)) != 0)
+                        if (off + 1 < Flags22.Length)
+                        {
+                            var val = Flags22[off + 1];
+                            if (val != null)
+                                result.Add(val);
+                        }
+                }
+
+                return result.ToArray();
+            } }
+        public Int32 XPReward;
+        public Int32 PowerLevel;
+        public Int32 Gold;
+        public Int32 StatusFlags; // state.ids
+        public Int16 CurrentHP;
+        public Int16 MaximumHP;
+        public Int32 Animation;
+        public Int16 Unknown;
+        public byte MetalColourIndex;
+        public byte MinorColourIndex;
+        public byte MajorColourIndex;
+        public byte SkinColourIndex;
+        public byte LeatherColourIndex;
+        public byte ArmorColourIndex;
+        public byte HairColourIndex;
+        public byte EffVersion;
+        [NonSerialized]
+        public array8 smallPortrait;
+        public string SmallPortrait => smallPortrait.ToString();
+        [NonSerialized]
+        public array8 largePortrait;
+        public string LargePortrait => largePortrait.ToString();
+        public byte Reputation;
+        public byte HideInShadows;
+        public Int16 ArmorClassNatural;
+        public Int16 ArmorClassEffective;
+        public Int16 CrushingModifuer;
+        public Int16 MissileModifier;
+        public Int16 PiercingModifier;
+        public Int16 SlashingModifier;
+        public byte Thac0;
+        public byte NumberOfAttacks;
+        public byte SaveVsDeath;
+        public byte SaveVsWands;
+        public byte SaveVsPolymorph;
+        public byte SaveVsBreath;
+        public byte SaveVsSpells;
+        public byte FireResistance;
+        public byte ColdResistance;
+        public byte ElectricityResistance;
+        public byte AcidResistance;
+        public byte MagicResistance;
+        public byte MagicFireResistance;
+        public byte MagicColdResistance;
+        public byte SlashingResistance;
+        public byte CrushingResistance;
+        public byte PiercingResistance;
+        public byte MissileResistance;
+
+        //public byte DetectIllusion;
+        //public byte SetTraps;
+        public byte Lore;
+        public byte LockPicking;
+        public byte Stealth;
+        public byte FindTraps;
+        public byte PickPockets;
+        public byte Fatigue;
+        public byte Intoxication;
+        public byte Luck;
+        public byte TurnUndeadLevel;
+        public byte Tracking;
+        public byte Sex;
+        public byte Strength;
+        public byte StrengthBonus;
+        public byte Intelligence;
+        public byte Wisdom;
+        public byte Dexterity;
+        public byte Constitution;
+        public byte Charisma;
+        public byte Morale;
+        public byte MoraleBreak;
+        public Int16 MoraleRecoveryTime;
+        public UInt32 Kit;
+
+        //public array8 ScriptOverride;
+        //public array8 ScriptClass;
+        //public array8 ScriptRace;
+        //public array8 ScriptGeneral;
+        //public array8 ScriptDefault;
+        public byte EnemyAlly;
+        public byte General;
+        public byte Race;
+        public byte Class;
+        public byte Specific;
+        public byte Gender;
+        public byte ObjectIdRef1;
+        public byte ObjectIdRef2;
+        public byte ObjectIdRef3;
+        public byte ObjectIdRef4;
+        public byte ObjectIdRef5;
+        public byte Alignment;
+        public Int16 GlobalActorEnumeration;
+        public Int16 LocalActorEnumeration;
+        [NonSerialized]
+        public array32 deathVariable;
+        public string DeathVariable => deathVariable.ToString();
+
+        public Int32 KnownSpellsoffset;
+        public Int32 KnownSpellsCount;
+        public Int32 SpellMemorizationOffset;
+        public Int32 SpellMemorizationCount;
+        public Int32 MemorizedSpellsOffset;
+        public Int32 MemorizedSpellsCount;
+        public Int32 ItemSlotOffset;
+        public Int32 ItemOffset;
+        public Int32 ItemCount;
+        public Int32 EffectOffset;
+        public Int32 EffectCount;
+        [NonSerialized]
+        public array8 dialogFile;
+        public string DialogFile => dialogFile.ToString();
+
+        public byte ResistMagicDamage;
+        public byte LevelTotal;
+        public byte LevelBarbarian;
+        public byte LevelBard;
+        public byte LevelCleric;
+        public byte LevelDruid;
+        public byte LevelFighter;
+        public byte LevelMonk;
+        public byte LevelPaladin;
+        public byte LevelRanger;
+        public byte LevelRogue;
+        public byte LevelSorcerer;
+        public byte LevelWizard;
+
+        [NonSerialized]
+        public array8 scriptTeam;
+        public string ScriptTeam => dialogFile.ToString();
+
+        [NonSerialized]
+        public array8 scriptSpecial;
+        public string ScriptSpecial => dialogFile.ToString();
+
+        public byte EnchantmentLevel;
+
+        public byte FeatWeaponProBow;
+        public byte FeatWeaponProCrossbow;
+        public byte FeatWeaponProMissle;
+        public byte FeatWeaponProAxe;
+        public byte FeatWeaponProMace;
+        public byte FeatWeaponProFlail;
+        public byte FeatWeaponProPolearm;
+        public byte FeatWeaponProHammer;
+        public byte FeatWeaponProQuarterstaff;
+        public byte FeatWeaponProGreatsword;
+        public byte FeatWeaponProLargeSword;
+        public byte FeatWeaponProSmallBlade;
+
+        public byte FeatToughness;
+        public byte FeatArmoredArcana;
+        public byte FeatCleave;
+        public byte FeatArmorPreficiency;
+
+        public byte FeatSpellFocusEnchantment;
+        public byte FeatSpellFocusEvocation;
+        public byte FeatSpellFocusNecromancy;
+        public byte FeatSpellFocusTransmutation;
+        public byte FeatSpellPenetration;
+
+        public byte FeatExtraRage;
+        public byte FeatExtraWildShape;
+        public byte FeatExtraExtraSmiting;
+        public byte FeatExtraExtraTurning;
+        public byte FeatWeaponProExoticBastardSword;
+
+        public byte SkillAlchemy;
+        public byte SkillAnimalEmpathy;
+        public byte SkillBluff;
+        public byte SkillConcentration;
+        public byte SkillDiplomacy;
+        public byte SkillDisableDevice;
+        public byte SkillHide;
+        public byte SkillIntimidate;
+        public byte SkillKnowledgeArcana;
+        public byte SkillMoveSilently;
+        public byte SkillOpenLock;
+        public byte SkillPickPocket;
+        public byte SkillSearch;
+        public byte SkillSpellcraft;
+        public byte SkillUseMagicDevice;
+        public byte SkillWildernessLaw;
+
+        public byte ChallangeRating;
+
+        public byte FavouredEnemy1;
+        public byte FavouredEnemy2;
+        public byte FavouredEnemy3;
+        public byte FavouredEnemy4;
+        public byte FavouredEnemy5;
+        public byte FavouredEnemy6;
+        public byte FavouredEnemy7;
+        public byte FavouredEnemy8;
+
+        public byte Subrace;
+
+        [NonSerialized]
+        public array8 scriptSpecial2;
+        public string ScriptSpecial2 => scriptSpecial2.ToString();
+        [NonSerialized]
+        public array8 scriptCombat;
+        public string ScriptCombat => scriptCombat.ToString();
+        [NonSerialized]
+        public array8 scriptSpecial3;
+        public string ScriptSpecial3 => scriptSpecial3.ToString();
+        [NonSerialized]
+        public array8 scriptMovement;
+        public string ScriptMovement => scriptMovement.ToString();
+
+        public byte Hidden;
+        public byte OnDeathSetExtraVariable;
+        public byte IncrementKillCount;
+
+        public Int16 VariableInternal1;
+        public Int16 VariableInternal2;
+        public Int16 VariableInternal3;
+        public Int16 VariableInternal4;
+        public Int16 VariableInternal5;
+
+        [NonSerialized]
+        public array32 deathVariable2;
+        public string DeathVariable2 => deathVariable2.ToString();
+        [NonSerialized]
+        public array32 deathVariable3;
+        public string DeathVariable3 => deathVariable3.ToString();
         public Int16 IsLocationSaved;
         public Int16 SavedLocationX;
         public Int16 SavedLocationY;
@@ -569,4 +851,18 @@ namespace iiInfinityEngine.Core.Files
         Wizard,
         Innate
     }
+
+    [Serializable]
+    public class SpellEntry
+    {
+        public string SpellName;
+        public int Memorized;
+        public int Remaining;
+
+        public override string ToString()
+        {
+            return $"{SpellName} {Remaining}/{Memorized}";
+        }
+    }
+
 }

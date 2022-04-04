@@ -236,7 +236,7 @@ namespace iiInfinityEngine.Core.Binary
         public array4 fversion;
         public Int32 LongName;
         public Int32 ShortName;
-        public Int32 Flags;
+        public UInt32 Flags;
         public Int32 XPReward;
         public Int32 PowerLevel;
         public Int32 Gold;

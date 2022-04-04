@@ -550,7 +550,7 @@ namespace iiInfinityEngine.Core.Writers
                 actorBinary.ScriptOverride = new array8(actor.ScriptOverride);
                 actorBinary.ScriptRace = new array8(actor.ScriptRace);
                 actorBinary.ScriptSpecific = new array8(actor.ScriptSpecific);
-                actorBinary.Unknown = actor.Unknown;
+                actorBinary.AreaDifficultyMask = actor.AreaDifficultyMask;
                 actorBinary.Unknown2 = actor.Unknown2;
                 actors.Add(actorBinary);
             }

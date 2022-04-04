@@ -338,8 +338,9 @@ namespace iiInfinityEngine.Core.Readers
                 areActor2.ScriptOverride = actor.ScriptOverride.ToString();
                 areActor2.ScriptRace = actor.ScriptRace.ToString();
                 areActor2.ScriptSpecific = actor.ScriptSpecific.ToString();
-                areActor2.Unknown = actor.Unknown;
+                areActor2.AreaDifficultyMask = actor.AreaDifficultyMask;
                 areActor2.Unknown2 = actor.Unknown2;
+                areActor2.ScriptSpecial1 = actor.ScriptSpecial1.ToString();
                 areFile.actors.Add(areActor2);
             }
 

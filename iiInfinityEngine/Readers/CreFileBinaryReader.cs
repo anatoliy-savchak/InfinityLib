@@ -43,238 +43,221 @@ namespace iiInfinityEngine.Core.Readers
             dynamic header = null;
             string version = probe.fversion.ToString();
             CreHeaderBinary22 header22 = new CreHeaderBinary22();
+
+            CreFile9 creFile = null;
+
+            CreFile22 creFile22 = null;
+
             if (version == "V2.2")
             {
                 header22 = (CreHeaderBinary22)Common.ReadStruct(br, typeof(CreHeaderBinary22));
                 header = header22;
+                creFile22 = new CreFile22();
             }
             else
+            {
                 header = (CreHeaderBinary)Common.ReadStruct(br, typeof(CreHeaderBinary));
+                creFile = new CreFile9();
+            }
 
             if (header.ftype.ToString() != "CRE ")
                 return new CreFile();
 
 
-            var creFile = new CreFile();
-            creFile.Flags.ShowLongname = (header.Flags & Common.Bit0) != 0;
-            creFile.Flags.NoCorpse = (header.Flags & Common.Bit1) != 0;
-            creFile.Flags.KeepCorpse = (header.Flags & Common.Bit2) != 0;
-            creFile.Flags.OriginalFighter = (header.Flags & Common.Bit3) != 0;
-            creFile.Flags.OriginalMage = (header.Flags & Common.Bit4) != 0;
-            creFile.Flags.OriginalCleric = (header.Flags & Common.Bit5) != 0;
-            creFile.Flags.OriginalThief = (header.Flags & Common.Bit6) != 0;
-            creFile.Flags.OriginalDruid = (header.Flags & Common.Bit7) != 0;
-            creFile.Flags.OriginalRanger = (header.Flags & Common.Bit8) != 0;
-            creFile.Flags.FallenPaladin = (header.Flags & Common.Bit9) != 0;
-            creFile.Flags.FallenRanger = (header.Flags & Common.Bit10) != 0;
-            creFile.Flags.Exportable = (header.Flags & Common.Bit11) != 0;
-            creFile.Flags.HideInjuryStatus = (header.Flags & Common.Bit12) != 0;
-            creFile.Flags.QuestCritical = (header.Flags & Common.Bit13) != 0;
-            creFile.Flags.CanActivateTriggers = (header.Flags & Common.Bit14) != 0;
-            creFile.Flags.BeenInParty = (header.Flags & Common.Bit15) != 0;
-            creFile.Flags.RestoreItem = (header.Flags & Common.Bit16) != 0;
-            creFile.Flags.ClearRestoreItem = (header.Flags & Common.Bit17) != 0;
-            creFile.Flags.RandomWalkEa = (header.Flags & Common.Bit24) != 0;
-            creFile.Flags.RandomWalkGeneral = (header.Flags & Common.Bit25) != 0;
-            creFile.Flags.RandomWalkRace = (header.Flags & Common.Bit26) != 0;
-            creFile.Flags.RandomWalkClass = (header.Flags & Common.Bit27) != 0;
-            creFile.Flags.RandomWalkSpecific = (header.Flags & Common.Bit28) != 0;
-            creFile.Flags.RandomWalkGender = (header.Flags & Common.Bit29) != 0;
-            creFile.Flags.RandomWalkAlignment = (header.Flags & Common.Bit30) != 0;
-            creFile.Flags.UnInterruptable = (header.Flags & Common.Bit31) != 0;
-
-            creFile.ShortName = Common.ReadString(header.ShortName, TlkFile);
-            creFile.LongName = Common.ReadString(header.LongName, TlkFile);
-            creFile.XPReward = header.XPReward;
-            creFile.PowerLevel = header.PowerLevel;
-            creFile.Gold = header.Gold;
-            creFile.StatusFlags = header.StatusFlags;
-            creFile.CurrentHP = header.CurrentHP;
-            creFile.MaximumHP = header.MaximumHP;
-            creFile.Animation = header.Animation;
-            creFile.MetalColourIndex = header.MetalColourIndex;
-            creFile.MinorColourIndex = header.MinorColourIndex;
-            creFile.MajorColourIndex = header.MajorColourIndex;
-            creFile.SkinColourIndex = header.SkinColourIndex;
-            creFile.LeatherColourIndex = header.LeatherColourIndex;
-            creFile.ArmorColourIndex = header.ArmorColourIndex;
-            creFile.HairColourIndex = header.HairColourIndex;
-            creFile.EffVersion = header.EffVersion;
-            creFile.SmallPortrait = header.SmallPortrait;
-            creFile.LargePortrait = header.LargePortrait;
-            creFile.Reputation = header.Reputation;
-            creFile.HideInShadows = header.HideInShadows;
-            creFile.ArmorClassNatural = header.ArmorClassNatural;
-            creFile.CrushingModifuer = header.CrushingModifuer;
-            creFile.MissileModifier = header.MissileModifier;
-            creFile.PiercingModifier = header.PiercingModifier;
-            creFile.SlashingModifier = header.SlashingModifier;
-            creFile.Thac0 = header.Thac0;
-            creFile.NumberOfAttacks = header.NumberOfAttacks;
-            creFile.SaveVsDeath = header.SaveVsDeath;
-            creFile.SaveVsWands = header.SaveVsWanrds;
-            creFile.SaveVsPolymorph = header.SaveVsPolymorph;
-            creFile.FireResistance = header.FireResistance;
-            creFile.ColdResistance = header.ColdResistance;
-            creFile.ElectricityResistance = header.ElectricityResistance;
-            creFile.AcidResistance = header.AcidResistance;
-            creFile.MagicResistance = header.MagicResistance;
-            creFile.MagicFireResistance = header.MagicFireResistance;
-            creFile.MagicColdResistance = header.MagicColdResistance;
-            creFile.SlashingResistance = header.SlashingResistance;
-            creFile.CrushingResistance = header.CrushingResistance;
-            creFile.PiercingResistance = header.PiercingResistance;
-            creFile.MissileResistance = header.MissileResistance;
-            creFile.ResistMagicDamage = header.ResistMagicDamage;
-            creFile.Fatigue = header.Fatigue;
-            creFile.Intoxication = header.Intoxication;
-            creFile.Luck = header.Luck;
-            creFile.TurnUndeadLevel = header.TurnUndeadLevel;
             if (version == "V2.2")
             {
-                creFile.LevelTotal = header.LevelTotal;
-                creFile.LevelBarbarian = header.LevelBarbarian;
-                creFile.LevelBard = header.LevelBard;
-                creFile.LevelCleric = header.LevelCleric;
-                creFile.LevelDruid = header.LevelDruid;
-                creFile.LevelFighter = header.LevelFighter;
-                creFile.LevelMonk = header.LevelMonk;
-                creFile.LevelPaladin = header.LevelPaladin;
-                creFile.LevelRanger = header.LevelRanger;
-                creFile.LevelRogue = header.LevelRogue;
-                creFile.LevelSorcerer = header.LevelSorcerer;
-                creFile.LevelWizard = header.LevelWizard;
+                creFile22.flags = header.Flags;
+                creFile22.ShortName = Common.ReadString(header.ShortName, TlkFile);
+                creFile22.LongName = Common.ReadString(header.LongName, TlkFile);
+                creFile22.XPReward = header.XPReward;
+                creFile22.PowerLevel = header.PowerLevel;
+                creFile22.Gold = header.Gold;
+                creFile22.StatusFlags = header.StatusFlags;
+                creFile22.CurrentHP = header.CurrentHP;
+                creFile22.MaximumHP = header.MaximumHP;
+                creFile22.Animation = header.Animation;
+                creFile22.MetalColourIndex = header.MetalColourIndex;
+                creFile22.MinorColourIndex = header.MinorColourIndex;
+                creFile22.MajorColourIndex = header.MajorColourIndex;
+                creFile22.SkinColourIndex = header.SkinColourIndex;
+                creFile22.LeatherColourIndex = header.LeatherColourIndex;
+                creFile22.ArmorColourIndex = header.ArmorColourIndex;
+                creFile22.HairColourIndex = header.HairColourIndex;
+                creFile22.EffVersion = header.EffVersion;
+                creFile22.smallPortrait = header.SmallPortrait;
+                creFile22.largePortrait = header.LargePortrait;
+                creFile22.Reputation = header.Reputation;
+                creFile22.HideInShadows = header.HideInShadows;
+                creFile22.ArmorClassNatural = header.ArmorClassNatural;
+                creFile22.CrushingModifuer = header.CrushingModifuer;
+                creFile22.MissileModifier = header.MissileModifier;
+                creFile22.PiercingModifier = header.PiercingModifier;
+                creFile22.SlashingModifier = header.SlashingModifier;
+                creFile22.Thac0 = header.Thac0;
+                creFile22.NumberOfAttacks = header.NumberOfAttacks;
+                creFile22.SaveVsDeath = header.SaveVsDeath;
+                creFile22.SaveVsWands = header.SaveVsWanrds;
+                creFile22.SaveVsPolymorph = header.SaveVsPolymorph;
+                creFile22.FireResistance = header.FireResistance;
+                creFile22.ColdResistance = header.ColdResistance;
+                creFile22.ElectricityResistance = header.ElectricityResistance;
+                creFile22.AcidResistance = header.AcidResistance;
+                creFile22.MagicResistance = header.MagicResistance;
+                creFile22.MagicFireResistance = header.MagicFireResistance;
+                creFile22.MagicColdResistance = header.MagicColdResistance;
+                creFile22.SlashingResistance = header.SlashingResistance;
+                creFile22.CrushingResistance = header.CrushingResistance;
+                creFile22.PiercingResistance = header.PiercingResistance;
+                creFile22.MissileResistance = header.MissileResistance;
+                creFile22.ResistMagicDamage = header.ResistMagicDamage;
+                creFile22.Fatigue = header.Fatigue;
+                creFile22.Intoxication = header.Intoxication;
+                creFile22.Luck = header.Luck;
+                creFile22.TurnUndeadLevel = header.TurnUndeadLevel;
 
-                creFile.ScriptTeam = header.ScriptTeam;
-                creFile.ScriptSpecial = header.ScriptSpecial;
-                creFile.EnchantmentLevel = header.EnchantmentLevel;
+                creFile22.LevelTotal = header.LevelTotal;
+                creFile22.LevelBarbarian = header.LevelBarbarian;
+                creFile22.LevelBard = header.LevelBard;
+                creFile22.LevelCleric = header.LevelCleric;
+                creFile22.LevelDruid = header.LevelDruid;
+                creFile22.LevelFighter = header.LevelFighter;
+                creFile22.LevelMonk = header.LevelMonk;
+                creFile22.LevelPaladin = header.LevelPaladin;
+                creFile22.LevelRanger = header.LevelRanger;
+                creFile22.LevelRogue = header.LevelRogue;
+                creFile22.LevelSorcerer = header.LevelSorcerer;
+                creFile22.LevelWizard = header.LevelWizard;
+
+                creFile22.scriptTeam = header.ScriptTeam;
+                creFile22.scriptSpecial = header.ScriptSpecial;
+                creFile22.EnchantmentLevel = header.EnchantmentLevel;
 
                 var r = FeatFlag2Name(header.Feats1, 1);
-                creFile.Feats.AddRange(r);
+                creFile22.Feats.AddRange(r);
                 r = FeatFlag2Name(header.Feats2, 2);
-                creFile.Feats.AddRange(r);
+                creFile22.Feats.AddRange(r);
                 r = FeatFlag2Name(header.Feats3, 3);
-                creFile.Feats.AddRange(r);
+                creFile22.Feats.AddRange(r);
 
-                creFile.FeatWeaponProBow = header.FeatWeaponProBow;
-                creFile.FeatWeaponProCrossbow = header.FeatWeaponProCrossbow;
-                creFile.FeatWeaponProMissle = header.FeatWeaponProMissle;
-                creFile.FeatWeaponProAxe = header.FeatWeaponProAxe;
-                creFile.FeatWeaponProMace = header.FeatWeaponProMace;
-                creFile.FeatWeaponProFlail = header.FeatWeaponProFlail;
-                creFile.FeatWeaponProPolearm = header.FeatWeaponProPolearm;
-                creFile.FeatWeaponProHammer = header.FeatWeaponProHammer;
-                creFile.FeatWeaponProQuarterstaff = header.FeatWeaponProQuarterstaff;
-                creFile.FeatWeaponProGreatsword = header.FeatWeaponProGreatsword;
-                creFile.FeatWeaponProLargeSword = header.FeatWeaponProLargeSword;
-                creFile.FeatWeaponProSmallBlade = header.FeatWeaponProSmallBlade;
+                creFile22.FeatWeaponProBow = header.FeatWeaponProBow;
+                creFile22.FeatWeaponProCrossbow = header.FeatWeaponProCrossbow;
+                creFile22.FeatWeaponProMissle = header.FeatWeaponProMissle;
+                creFile22.FeatWeaponProAxe = header.FeatWeaponProAxe;
+                creFile22.FeatWeaponProMace = header.FeatWeaponProMace;
+                creFile22.FeatWeaponProFlail = header.FeatWeaponProFlail;
+                creFile22.FeatWeaponProPolearm = header.FeatWeaponProPolearm;
+                creFile22.FeatWeaponProHammer = header.FeatWeaponProHammer;
+                creFile22.FeatWeaponProQuarterstaff = header.FeatWeaponProQuarterstaff;
+                creFile22.FeatWeaponProGreatsword = header.FeatWeaponProGreatsword;
+                creFile22.FeatWeaponProLargeSword = header.FeatWeaponProLargeSword;
+                creFile22.FeatWeaponProSmallBlade = header.FeatWeaponProSmallBlade;
 
-                creFile.FeatToughness = header.FeatToughness;
-                creFile.FeatArmoredArcana = header.FeatArmoredArcana;
-                creFile.FeatCleave = header.FeatCleave;
-                creFile.FeatArmorPreficiency = header.FeatArmorPreficiency;
+                creFile22.FeatToughness = header.FeatToughness;
+                creFile22.FeatArmoredArcana = header.FeatArmoredArcana;
+                creFile22.FeatCleave = header.FeatCleave;
+                creFile22.FeatArmorPreficiency = header.FeatArmorPreficiency;
 
-                creFile.FeatSpellFocusEnchantment = header.FeatSpellFocusEnchantment;
-                creFile.FeatSpellFocusEvocation = header.FeatSpellFocusEvocation;
-                creFile.FeatSpellFocusNecromancy = header.FeatSpellFocusNecromancy;
-                creFile.FeatSpellFocusTransmutation = header.FeatSpellFocusTransmutation;
-                creFile.FeatSpellPenetration = header.FeatSpellPenetration;
+                creFile22.FeatSpellFocusEnchantment = header.FeatSpellFocusEnchantment;
+                creFile22.FeatSpellFocusEvocation = header.FeatSpellFocusEvocation;
+                creFile22.FeatSpellFocusNecromancy = header.FeatSpellFocusNecromancy;
+                creFile22.FeatSpellFocusTransmutation = header.FeatSpellFocusTransmutation;
+                creFile22.FeatSpellPenetration = header.FeatSpellPenetration;
 
-                creFile.FeatExtraRage = header.FeatExtraRage;
-                creFile.FeatExtraWildShape = header.FeatExtraWildShape;
-                creFile.FeatExtraExtraSmiting = header.FeatExtraExtraSmiting;
-                creFile.FeatExtraExtraTurning = header.FeatExtraExtraTurning;
-                creFile.FeatWeaponProExoticBastardSword = header.FeatWeaponProExoticBastardSword;
+                creFile22.FeatExtraRage = header.FeatExtraRage;
+                creFile22.FeatExtraWildShape = header.FeatExtraWildShape;
+                creFile22.FeatExtraExtraSmiting = header.FeatExtraExtraSmiting;
+                creFile22.FeatExtraExtraTurning = header.FeatExtraExtraTurning;
+                creFile22.FeatWeaponProExoticBastardSword = header.FeatWeaponProExoticBastardSword;
 
-                creFile.SkillAlchemy = header.SkillAlchemy;
-                creFile.SkillAnimalEmpathy = header.SkillAnimalEmpathy;
-                creFile.SkillBluff = header.SkillBluff;
-                creFile.SkillConcentration = header.SkillConcentration;
-                creFile.SkillDiplomacy = header.SkillDiplomacy;
-                creFile.SkillDisableDevice = header.SkillDisableDevice;
-                creFile.SkillHide = header.SkillHide;
-                creFile.SkillIntimidate = header.SkillIntimidate;
-                creFile.SkillKnowledgeArcana = header.SkillKnowledgeArcana;
-                creFile.SkillMoveSilently = header.SkillMoveSilently;
-                creFile.SkillOpenLock = header.SkillOpenLock;
-                creFile.SkillPickPocket = header.SkillPickPocket;
-                creFile.SkillSearch = header.SkillSearch;
-                creFile.SkillSpellcraft = header.SkillSpellcraft;
-                creFile.SkillUseMagicDevice = header.SkillUseMagicDevice;
-                creFile.SkillWildernessLaw = header.SkillWildernessLaw;
+                creFile22.SkillAlchemy = header.SkillAlchemy;
+                creFile22.SkillAnimalEmpathy = header.SkillAnimalEmpathy;
+                creFile22.SkillBluff = header.SkillBluff;
+                creFile22.SkillConcentration = header.SkillConcentration;
+                creFile22.SkillDiplomacy = header.SkillDiplomacy;
+                creFile22.SkillDisableDevice = header.SkillDisableDevice;
+                creFile22.SkillHide = header.SkillHide;
+                creFile22.SkillIntimidate = header.SkillIntimidate;
+                creFile22.SkillKnowledgeArcana = header.SkillKnowledgeArcana;
+                creFile22.SkillMoveSilently = header.SkillMoveSilently;
+                creFile22.SkillOpenLock = header.SkillOpenLock;
+                creFile22.SkillPickPocket = header.SkillPickPocket;
+                creFile22.SkillSearch = header.SkillSearch;
+                creFile22.SkillSpellcraft = header.SkillSpellcraft;
+                creFile22.SkillUseMagicDevice = header.SkillUseMagicDevice;
+                creFile22.SkillWildernessLaw = header.SkillWildernessLaw;
 
-                creFile.ChallangeRating = header.ChallangeRating;
+                creFile22.ChallangeRating = header.ChallangeRating;
 
-                creFile.FavouredEnemy1 = header.FavouredEnemy1;
-                creFile.FavouredEnemy2 = header.FavouredEnemy2;
-                creFile.FavouredEnemy3 = header.FavouredEnemy3;
-                creFile.FavouredEnemy4 = header.FavouredEnemy4;
-                creFile.FavouredEnemy5 = header.FavouredEnemy5;
-                creFile.FavouredEnemy6 = header.FavouredEnemy6;
-                creFile.FavouredEnemy7 = header.FavouredEnemy7;
-                creFile.FavouredEnemy8 = header.FavouredEnemy8;
+                creFile22.FavouredEnemy1 = header.FavouredEnemy1;
+                creFile22.FavouredEnemy2 = header.FavouredEnemy2;
+                creFile22.FavouredEnemy3 = header.FavouredEnemy3;
+                creFile22.FavouredEnemy4 = header.FavouredEnemy4;
+                creFile22.FavouredEnemy5 = header.FavouredEnemy5;
+                creFile22.FavouredEnemy6 = header.FavouredEnemy6;
+                creFile22.FavouredEnemy7 = header.FavouredEnemy7;
+                creFile22.FavouredEnemy8 = header.FavouredEnemy8;
 
-                creFile.Subrace = header.Subrace;
+                creFile22.Subrace = header.Subrace;
 
-                creFile.Strength = header.Strength;
-                creFile.Intelligence = header.Intelligence;
-                creFile.Wisdom = header.Wisdom;
-                creFile.Dexterity = header.Dexterity;
-                creFile.Constitution = header.Constitution;
-                creFile.Charisma = header.Charisma;
+                creFile22.Strength = header.Strength;
+                creFile22.Intelligence = header.Intelligence;
+                creFile22.Wisdom = header.Wisdom;
+                creFile22.Dexterity = header.Dexterity;
+                creFile22.Constitution = header.Constitution;
+                creFile22.Charisma = header.Charisma;
 
-                creFile.Morale = header.Morale;
-                creFile.MoraleBreak = header.MoraleBreak;
-                creFile.MoraleRecoveryTime = header.MoraleRecoveryTime;
-                creFile.Kit = header.Kit;
+                creFile22.Morale = header.Morale;
+                creFile22.MoraleBreak = header.MoraleBreak;
+                creFile22.MoraleRecoveryTime = header.MoraleRecoveryTime;
+                creFile22.Kit = header.Kit;
 
-                creFile.ScriptSpecial2 = header.ScriptSpecial2;
-                creFile.ScriptCombat = header.ScriptCombat;
-                creFile.ScriptSpecial3 = header.ScriptSpecial3;
-                creFile.ScriptMovement = header.ScriptMovement;
+                creFile22.scriptSpecial2 = header.ScriptSpecial2;
+                creFile22.scriptCombat = header.ScriptCombat;
+                creFile22.scriptSpecial3 = header.ScriptSpecial3;
+                creFile22.scriptMovement = header.ScriptMovement;
 
-                creFile.Hidden = header.Hidden;
-                creFile.OnDeathSetExtraVariable = header.OnDeathSetExtraVariable;
-                creFile.IncrementKillCount = header.IncrementKillCount;
+                creFile22.Hidden = header.Hidden;
+                creFile22.OnDeathSetExtraVariable = header.OnDeathSetExtraVariable;
+                creFile22.IncrementKillCount = header.IncrementKillCount;
 
-                creFile.VariableInternal1 = header.VariableInternal1;
-                creFile.VariableInternal2 = header.VariableInternal2;
-                creFile.VariableInternal3 = header.VariableInternal3;
-                creFile.VariableInternal4 = header.VariableInternal4;
-                creFile.VariableInternal5 = header.VariableInternal5;
+                creFile22.VariableInternal1 = header.VariableInternal1;
+                creFile22.VariableInternal2 = header.VariableInternal2;
+                creFile22.VariableInternal3 = header.VariableInternal3;
+                creFile22.VariableInternal4 = header.VariableInternal4;
+                creFile22.VariableInternal5 = header.VariableInternal5;
 
-                creFile.DeathVariable2 = header.DeathVariable2;
-                creFile.DeathVariable3 = header.DeathVariable3;
+                creFile22.deathVariable2 = header.DeathVariable2;
+                creFile22.deathVariable3 = header.DeathVariable3;
 
-                creFile.IsLocationSaved = header.IsLocationSaved;
-                creFile.SavedLocationX = header.SavedLocationX;
-                creFile.SavedLocationY = header.SavedLocationY;
-                creFile.SavedOrientation = header.SavedOrientation;
+                creFile22.IsLocationSaved = header.IsLocationSaved;
+                creFile22.SavedLocationX = header.SavedLocationX;
+                creFile22.SavedLocationY = header.SavedLocationY;
+                creFile22.SavedOrientation = header.SavedOrientation;
 
-                creFile.FadeAmount = header.FadeAmount;
-                creFile.FadeSpeed = header.FadeSpeed;
-                creFile.Attributes = header.Attributes;
-                creFile.Visibility = header.Visibility;
-                creFile.SkillPointsRemain = header.SkillPointsRemain;
+                creFile22.FadeAmount = header.FadeAmount;
+                creFile22.FadeSpeed = header.FadeSpeed;
+                creFile22.Attributes = header.Attributes;
+                creFile22.Visibility = header.Visibility;
+                creFile22.SkillPointsRemain = header.SkillPointsRemain;
 
-                creFile.EnemyAlly = header.EnemyAlly;
-                creFile.General = header.General;
-                creFile.Race = header.Race;
-                creFile.Class = header.Class;
-                creFile.Specific = header.Specific;
-                creFile.Gender = header.Gender;
-                creFile.ObjectIdRef1 = header.ObjectIdRef1;
-                creFile.ObjectIdRef2 = header.ObjectIdRef2;
-                creFile.ObjectIdRef3 = header.ObjectIdRef3;
-                creFile.ObjectIdRef4 = header.ObjectIdRef4;
-                creFile.ObjectIdRef5 = header.ObjectIdRef5;
-                creFile.Alignment = header.Alignment;
-                creFile.GlobalActorEnumeration = header.GlobalActorEnumeration;
-                creFile.LocalActorEnumeration = header.LocalActorEnumeration;
-                creFile.DeathVariable = header.DeathVariable;
+                creFile22.EnemyAlly = header.EnemyAlly;
+                creFile22.General = header.General;
+                creFile22.Race = header.Race;
+                creFile22.Class = header.Class;
+                creFile22.Specific = header.Specific;
+                creFile22.Gender = header.Gender;
+                creFile22.ObjectIdRef1 = header.ObjectIdRef1;
+                creFile22.ObjectIdRef2 = header.ObjectIdRef2;
+                creFile22.ObjectIdRef3 = header.ObjectIdRef3;
+                creFile22.ObjectIdRef4 = header.ObjectIdRef4;
+                creFile22.ObjectIdRef5 = header.ObjectIdRef5;
+                creFile22.Alignment = header.Alignment;
+                creFile22.GlobalActorEnumeration = header.GlobalActorEnumeration;
+                creFile22.LocalActorEnumeration = header.LocalActorEnumeration;
+                creFile22.deathVariable = header.DeathVariable;
 
-                creFile.Class2 = header.Class2;
-                creFile.ClassMsk = header.ClassMsk;
+                creFile22.Class2 = header.Class2;
+                creFile22.ClassMsk = header.ClassMsk;
 
                 DimensionalArrayFile listSpells = game.DimensionalArrays.Where(b => !String.IsNullOrEmpty(b.Filename) && b.Filename.ToLowerInvariant() == $"listspll.2da").SingleOrDefault();
                 string GetRefBySpellIndex(int spllIndex)
@@ -296,8 +279,24 @@ namespace iiInfinityEngine.Core.Readers
                     return null;
                 };
 
+                List<SpellEntry> GetSpellEntry(string classCode, int level)
+                {
+                    if (!creFile22.Spells.TryGetValue(classCode, out Dictionary<int, List<SpellEntry>> classEntry))
+                    {
+                        classEntry = new Dictionary<int, List<SpellEntry>>();
+                        creFile22.Spells.Add(classCode, classEntry);
+                    }
 
-                void ProcessSpell(int offset, int count, int level)
+                    if (!classEntry.TryGetValue(level, out List<SpellEntry> levelEntry))
+                    {
+                        levelEntry = new List<SpellEntry>();
+                        classEntry.Add(level, levelEntry);
+                    }
+                    return levelEntry;
+                }
+
+
+                void ProcessSpell(int offset, int count, int level, string classCode)
                 {
                     if (count == 0) return;
                     br.BaseStream.Seek(offset, SeekOrigin.Begin);
@@ -321,35 +320,122 @@ namespace iiInfinityEngine.Core.Readers
                                 spellName = splFile.UnidentifiedName.Text;
                         }
                         if (spellName == null) spellName = $"{creKnownSpell.SpellIndex}";
+                        var entry = GetSpellEntry(classCode, level);
+                        if (entry != null)
+                        {
+                            var rec = entry.Where(a=> a.SpellName == spellName).FirstOrDefault();
+                            if (rec == null)
+                            {
+                                rec = new SpellEntry() { SpellName = spellName, Memorized = creKnownSpell.AmountMemorized, Remaining = creKnownSpell.AmountRemaining};
+                                entry.Add(rec);
+                            }
+                        }
                         Debug.WriteLine($"Lv: {level}, name: {spellName}, memorizable: {creKnownSpell.AmountMemorized}, remaining: {creKnownSpell.AmountRemaining}");
                     }
                 };
 
-                void ProcessSpells(ref CreLevels9 offsets, ref CreLevels9 counts)
+                void ProcessSpells(ref CreLevels9 offsets, ref CreLevels9 counts, string classCode)
                 {
-                    ProcessSpell(offsets.Level01, counts.Level01, 1);
-                    ProcessSpell(offsets.Level02, counts.Level02, 2);
-                    ProcessSpell(offsets.Level03, counts.Level03, 3);
-                    ProcessSpell(offsets.Level04, counts.Level04, 4);
-                    ProcessSpell(offsets.Level05, counts.Level05, 5);
-                    ProcessSpell(offsets.Level06, counts.Level06, 6);
-                    ProcessSpell(offsets.Level07, counts.Level07, 7);
-                    ProcessSpell(offsets.Level08, counts.Level08, 8);
-                    ProcessSpell(offsets.Level09, counts.Level09, 9);
+                    ProcessSpell(offsets.Level01, counts.Level01, 1, classCode);
+                    ProcessSpell(offsets.Level02, counts.Level02, 2, classCode);
+                    ProcessSpell(offsets.Level03, counts.Level03, 3, classCode);
+                    ProcessSpell(offsets.Level04, counts.Level04, 4, classCode);
+                    ProcessSpell(offsets.Level05, counts.Level05, 5, classCode);
+                    ProcessSpell(offsets.Level06, counts.Level06, 6, classCode);
+                    ProcessSpell(offsets.Level07, counts.Level07, 7, classCode);
+                    ProcessSpell(offsets.Level08, counts.Level08, 8, classCode);
+                    ProcessSpell(offsets.Level09, counts.Level09, 9, classCode);
                 };
 
-                ProcessSpells(header.SpellsOffsetBard, header.SpellsCountBard);
-                ProcessSpells(header.SpellsOffsetCleric, header.SpellsCountCleric);
-                ProcessSpells(header.SpellsOffsetDruid, header.SpellsCountDruid);
-                ProcessSpells(header.SpellsOffsetPaladin, header.SpellsCountPaladin);
-                ProcessSpells(header.SpellsOffsetRanger, header.SpellsCountRanger);
-                ProcessSpells(header.SpellsOffsetSorcerer, header.SpellsCountSorcerer);
-                ProcessSpells(header.SpellsOffsetWizard, header.SpellsCountWizard);
+                ProcessSpells(header.SpellsOffsetBard, header.SpellsCountBard, "BRD");
+                ProcessSpells(header.SpellsOffsetCleric, header.SpellsCountCleric, "CLR");
+                ProcessSpells(header.SpellsOffsetDruid, header.SpellsCountDruid, "DRD");
+                ProcessSpells(header.SpellsOffsetPaladin, header.SpellsCountPaladin, "PAL");
+                ProcessSpells(header.SpellsOffsetRanger, header.SpellsCountRanger, "RGR");
+                ProcessSpells(header.SpellsOffsetSorcerer, header.SpellsCountSorcerer, "SOR");
+                ProcessSpells(header.SpellsOffsetWizard, header.SpellsCountWizard, "WIZ");
 
-                creFile.DialogFile = header.DialogFile;
+                creFile22.dialogFile = header.DialogFile;
+
+                return creFile22;
             }
             else
             {
+
+                creFile.Flags.ShowLongname = (header.Flags & Common.Bit0) != 0;
+                creFile.Flags.NoCorpse = (header.Flags & Common.Bit1) != 0;
+                creFile.Flags.KeepCorpse = (header.Flags & Common.Bit2) != 0;
+                creFile.Flags.OriginalFighter = (header.Flags & Common.Bit3) != 0;
+                creFile.Flags.OriginalMage = (header.Flags & Common.Bit4) != 0;
+                creFile.Flags.OriginalCleric = (header.Flags & Common.Bit5) != 0;
+                creFile.Flags.OriginalThief = (header.Flags & Common.Bit6) != 0;
+                creFile.Flags.OriginalDruid = (header.Flags & Common.Bit7) != 0;
+                creFile.Flags.OriginalRanger = (header.Flags & Common.Bit8) != 0;
+                creFile.Flags.FallenPaladin = (header.Flags & Common.Bit9) != 0;
+                creFile.Flags.FallenRanger = (header.Flags & Common.Bit10) != 0;
+                creFile.Flags.Exportable = (header.Flags & Common.Bit11) != 0;
+                creFile.Flags.HideInjuryStatus = (header.Flags & Common.Bit12) != 0;
+                creFile.Flags.QuestCritical = (header.Flags & Common.Bit13) != 0;
+                creFile.Flags.CanActivateTriggers = (header.Flags & Common.Bit14) != 0;
+                creFile.Flags.BeenInParty = (header.Flags & Common.Bit15) != 0;
+                creFile.Flags.RestoreItem = (header.Flags & Common.Bit16) != 0;
+                creFile.Flags.ClearRestoreItem = (header.Flags & Common.Bit17) != 0;
+                creFile.Flags.RandomWalkEa = (header.Flags & Common.Bit24) != 0;
+                creFile.Flags.RandomWalkGeneral = (header.Flags & Common.Bit25) != 0;
+                creFile.Flags.RandomWalkRace = (header.Flags & Common.Bit26) != 0;
+                creFile.Flags.RandomWalkClass = (header.Flags & Common.Bit27) != 0;
+                creFile.Flags.RandomWalkSpecific = (header.Flags & Common.Bit28) != 0;
+                creFile.Flags.RandomWalkGender = (header.Flags & Common.Bit29) != 0;
+                creFile.Flags.RandomWalkAlignment = (header.Flags & Common.Bit30) != 0;
+                creFile.Flags.UnInterruptable = (header.Flags & Common.Bit31) != 0;
+
+                creFile.ShortName = Common.ReadString(header.ShortName, TlkFile);
+                creFile.LongName = Common.ReadString(header.LongName, TlkFile);
+                creFile.XPReward = header.XPReward;
+                creFile.PowerLevel = header.PowerLevel;
+                creFile.Gold = header.Gold;
+                creFile.StatusFlags = header.StatusFlags;
+                creFile.CurrentHP = header.CurrentHP;
+                creFile.MaximumHP = header.MaximumHP;
+                creFile.Animation = header.Animation;
+                creFile.MetalColourIndex = header.MetalColourIndex;
+                creFile.MinorColourIndex = header.MinorColourIndex;
+                creFile.MajorColourIndex = header.MajorColourIndex;
+                creFile.SkinColourIndex = header.SkinColourIndex;
+                creFile.LeatherColourIndex = header.LeatherColourIndex;
+                creFile.ArmorColourIndex = header.ArmorColourIndex;
+                creFile.HairColourIndex = header.HairColourIndex;
+                creFile.EffVersion = header.EffVersion;
+                creFile.SmallPortrait = header.SmallPortrait;
+                creFile.LargePortrait = header.LargePortrait;
+                creFile.Reputation = header.Reputation;
+                creFile.HideInShadows = header.HideInShadows;
+                creFile.ArmorClassNatural = header.ArmorClassNatural;
+                creFile.CrushingModifuer = header.CrushingModifuer;
+                creFile.MissileModifier = header.MissileModifier;
+                creFile.PiercingModifier = header.PiercingModifier;
+                creFile.SlashingModifier = header.SlashingModifier;
+                creFile.Thac0 = header.Thac0;
+                creFile.NumberOfAttacks = header.NumberOfAttacks;
+                creFile.SaveVsDeath = header.SaveVsDeath;
+                creFile.SaveVsWands = header.SaveVsWanrds;
+                creFile.SaveVsPolymorph = header.SaveVsPolymorph;
+                creFile.FireResistance = header.FireResistance;
+                creFile.ColdResistance = header.ColdResistance;
+                creFile.ElectricityResistance = header.ElectricityResistance;
+                creFile.AcidResistance = header.AcidResistance;
+                creFile.MagicResistance = header.MagicResistance;
+                creFile.MagicFireResistance = header.MagicFireResistance;
+                creFile.MagicColdResistance = header.MagicColdResistance;
+                creFile.SlashingResistance = header.SlashingResistance;
+                creFile.CrushingResistance = header.CrushingResistance;
+                creFile.PiercingResistance = header.PiercingResistance;
+                creFile.MissileResistance = header.MissileResistance;
+                creFile.ResistMagicDamage = header.ResistMagicDamage;
+                creFile.Fatigue = header.Fatigue;
+                creFile.Intoxication = header.Intoxication;
+                creFile.Luck = header.Luck;
+                creFile.TurnUndeadLevel = header.TurnUndeadLevel;
 
                 creFile.Alignment = header.Alignment;
                 if (version == "V9") creFile.ArmorClassEffective = header.ArmorClassEffective;

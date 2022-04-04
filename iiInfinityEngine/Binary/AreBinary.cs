@@ -77,7 +77,7 @@ namespace iiInfinityEngine.Core.Binary
         public Int32 Flags;
         public Int16 HasBeenSpawned;
         public byte FilenameInitialCharacter;
-        public byte Unknown;
+        public byte AreaDifficultyMask;
         public Int32 ActorAnimation;
         public Int32 ActorOrientation;
         public Int32 ActorRemovalTimer;
@@ -95,7 +95,8 @@ namespace iiInfinityEngine.Core.Binary
         public array8 CREFile;
         public Int32 CreOffset;
         public Int32 CreSize;
-        public array128 Unknown2;
+        public array8 ScriptSpecial1;
+        public array120 Unknown2;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

@@ -76,9 +76,9 @@ namespace iiInfinityEngine.Core.Files
         public ActorFlags ActorFlags;
         public Int16 HasBeenSpawned;
         public byte FilenameInitialCharacter;
-        public byte Unknown;
+        public byte AreaDifficultyMask;
         public Int32 ActorAnimation;
-        public Int32 ActorOrientation;
+        public Int32 ActorOrientation; //should be 2 + unused 2
         public Int32 ActorRemovalTimer;
         public Int16 MovementRestrictionDistance;
         public Int16 MovementRestrictionDistanceMoveToObject;
@@ -110,15 +110,17 @@ namespace iiInfinityEngine.Core.Files
         public Int32 NumTimesTalkedTo;
         public string Dialog;
         public string ScriptOverride;
-        public string ScriptGeneral;
-        public string ScriptClass;
-        public string ScriptRace;
-        public string ScriptDefault;
-        public string ScriptSpecific;
+        public string ScriptGeneral; // special 3
+        public string ScriptClass; // special 2
+        public string ScriptRace; // combat
+        public string ScriptDefault; // movement
+        public string ScriptSpecific; // team
         public string CREFile;
         public Int32 CreOffset;
         public Int32 CreSize;
-        public array128 Unknown2;
+        public string ScriptSpecial1; // team
+        [NonSerialized]
+        public array120 Unknown2;
     }
 
     [Serializable]

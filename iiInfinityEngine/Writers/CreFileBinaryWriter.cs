@@ -28,7 +28,7 @@ namespace iiInfinityEngine.Core.Writers
             if (!(file is CreFile))
                 throw new ArgumentException("File is not a valid creature file");
 
-            var creFile = file as CreFile;
+            var creFile = file as CreFile9;
 
             if (!(forceSave) && (MD5HashGenerator.GenerateKey(creFile) == creFile.Checksum))
                 return false;

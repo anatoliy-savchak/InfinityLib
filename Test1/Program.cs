@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using iiInfinityEngine.Core;
 using iiInfinityEngine.Core.Files;
+using Newtonsoft.Json;
 
 namespace Test1
 {
@@ -71,12 +74,61 @@ namespace Test1
                     Console.WriteLine($"{cre.ShortName}: {cre.LongName}");
                 }
             }
-            if (true)
+            if (false)
             {
                 LoadDim("LISTSPLL");
                 game.LoadResources(IEFileType.Tlk);
                 game.LoadResources(IEFileType.Spl);
                 LoadCre("12PHAEN");
+            }
+            if (true)
+            {
+                string outDir = @"D:\Dev.Home\GitHub\anatoliy-savchak\toee.zmod.iwd2\resources\iwd2_exp";
+
+                string outAreaDir = Path.Combine(outDir, "Areas");
+                if (!Directory.Exists(outAreaDir)) Directory.CreateDirectory(outAreaDir);
+
+                string outCreDir = Path.Combine(outDir, "Creatures");
+                if (!Directory.Exists(outCreDir)) Directory.CreateDirectory(outCreDir);
+
+                LoadDim("LISTSPLL");
+                game.LoadResources(IEFileType.Tlk);
+                game.LoadResources(IEFileType.Spl);
+                string dir;
+                List<CreFile> alreadyCre = new List<CreFile>();
+                foreach (var area in game.Areas.ToArray())
+                {
+                    string nameArea = area.Filename.Replace(".Are", string.Empty);
+                    dir = Path.Combine(outAreaDir, nameArea);
+                    if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+
+                    foreach (AreActor2 actor in area.actors)
+                    {
+                        string nameActor = actor.Name;
+                        string content = JsonConvert.SerializeObject(actor, Formatting.Indented);
+                        string fileName = Path.Combine(dir, nameActor) + ".json";
+                        File.WriteAllText(fileName, content);
+
+                        CreFile cre = LoadCre(actor.CREFile);
+                        if (cre != null)
+                        {
+                            if (!alreadyCre.Contains(cre))
+                            {
+                                string nameCre = cre.Filename.Replace(".Cre", string.Empty);
+                                content = JsonConvert.SerializeObject(cre, Formatting.Indented);
+                                fileName = Path.Combine(outCreDir, nameCre) + ".json";
+                                File.WriteAllText(fileName, content);
+
+                                alreadyCre.Add(cre);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Cre is null!");
+                        }
+                    }
+
+                }
             }
 
 
