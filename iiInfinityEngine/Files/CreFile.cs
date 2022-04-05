@@ -679,7 +679,20 @@ namespace iiInfinityEngine.Core.Files
 
         public UInt16 Class2;
         public UInt16 ClassMsk;
+
+        public CreItemSlot[] Items;
     }
+
+    [Serializable]
+    public class CreItemSlot
+    {
+        public string SlotCode;
+        public short SlotIndex;
+        public short SlotItemIndex;
+        public CreItem2? Item;
+        public string ItemNameEval;
+    }
+
 
     [Serializable]
     public struct CreatureFlags
@@ -824,7 +837,8 @@ namespace iiInfinityEngine.Core.Files
         public Int16 Charges1 { get; set; }
         public Int16 Charges2 { get; set; }
         public Int16 Charges3 { get; set; }
-        public Int32 Flags { get; set; }
+        public UInt32 flags;
+        public CreItemBinaryFlags Flags => (CreItemBinaryFlags)flags;
     }
 
     [Serializable]

@@ -187,12 +187,13 @@ namespace iiInfinityEngine.Core.Readers
                                     break;
 
                                 case IEFileType.Cre:
-                                    try
+                                    //try
                                     {
                                         resource = resources.Where(a => a.NonTileSetIndex == (f.resourceLocator & 0xFFF)).SingleOrDefault();
                                         if (resource != null)
                                         {
                                             CreFileBinaryReader cre = new CreFileBinaryReader();
+                                            cre.TlkFile = TlkFile;
                                             cre.game = game;
                                             var creature = (CreFile)cre.Read(ms);
                                             if (resource != null)
@@ -203,7 +204,7 @@ namespace iiInfinityEngine.Core.Readers
                                             resources2.Remove(resource);
                                         }
                                     }
-                                    catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
+                                   //catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
                                     break;
 
                                 case IEFileType.Eff:

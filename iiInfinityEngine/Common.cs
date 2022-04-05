@@ -2162,7 +2162,9 @@ namespace iiInfinityEngine.Core
         }
     }
 
-    public enum StringEntryType
+    [Serializable]
+    [Flags]
+    public enum StringEntryType: Int32
     {
         NoMessageData = 0,
         Text = 1,

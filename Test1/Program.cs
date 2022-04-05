@@ -54,6 +54,16 @@ namespace Test1
                 return obj;
             };
 
+            ItmFile LoadItem(string name)
+            {
+                string nameLower = name.ToLowerInvariant();
+                var obj = game.Items.Where(b => !String.IsNullOrEmpty(b.Filename) && b.Filename.ToLowerInvariant() == $"{nameLower}.itm").SingleOrDefault();
+                if (obj == null)
+                    game.LoadResouce(nameLower, IEFileType.Itm);
+                obj = game.Items.Where(b => !String.IsNullOrEmpty(b.Filename) && b.Filename.ToLowerInvariant() == $"{nameLower}.itm").SingleOrDefault();
+                return obj;
+            };
+
             if (false)
             {
                 var area = game.Areas.Where(a => a.Filename.ToLowerInvariant() == "ar1000.are").SingleOrDefault();
@@ -121,7 +131,16 @@ namespace Test1
                     foreach (AreActor2 actor in area.actors)
                     {
                         string nameActor = actor.Name;
-                        string content = JsonConvert.SerializeObject(actor, Formatting.Indented);
+                        string content = JsonConvert.SerializeObject(actor, Formatting.Indented,
+                            new Newtonsoft.Json.JsonSerializerSettings()
+                            {
+                                Converters = new List<Newtonsoft.Json.JsonConverter>
+                                {
+                                                    new Newtonsoft.Json.Converters.StringEnumConverter()
+                                }
+                            }
+                            );
+
                         string fileName = Path.Combine(dir, nameActor) + ".json";
                         string logStr = fileName.Substring(outDir.Length);
                         //Console.WriteLine(logStr);
@@ -133,8 +152,31 @@ namespace Test1
                         {
                             if (!alreadyCre.Contains(cre))
                             {
+                                for(int i=0; i < ((CreFile22)cre).Items.Length; i++)
+                                //foreach(var item in ((CreFile22)cre).Items)
+                                {
+                                    var item = ((CreFile22)cre).Items[i];
+                                    if ((item.Item.HasValue) && (string.IsNullOrEmpty(item.ItemNameEval)) && (!string.IsNullOrEmpty(item.Item.Value.Filename)))
+                                    {
+                                        var itemObj = LoadItem(item.Item.Value.Filename);
+                                        if (itemObj != null)
+                                        {
+                                            item.ItemNameEval = itemObj.IdentifiedName.Text;
+                                        }
+                                    }
+                                }
+
                                 string nameCre = cre.Filename.Replace(".Cre", string.Empty);
-                                content = JsonConvert.SerializeObject(cre, Formatting.Indented);
+                                content = JsonConvert.SerializeObject(cre, Formatting.Indented,
+                                    new Newtonsoft.Json.JsonSerializerSettings()
+                                    {
+                                        Converters = new List<Newtonsoft.Json.JsonConverter>
+                                        {
+                                                    new Newtonsoft.Json.Converters.StringEnumConverter()
+                                        }
+                                    }
+                                    );
+
                                 fileName = Path.Combine(outCreDir, nameCre) + ".json";
                                 Debug.WriteLine($"{fileName.Substring(outDir.Length)}");
                                 File.WriteAllText(fileName, content);
@@ -182,8 +224,8 @@ namespace Test1
             }
 
 
-            Console.WriteLine("Press any key to close...");
-            Console.ReadKey();
+            //Console.WriteLine("Press any key to close...");
+            //Console.ReadKey();
         }
     }
 }

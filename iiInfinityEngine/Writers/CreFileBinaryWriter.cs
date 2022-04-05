@@ -140,7 +140,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Helmet.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Helmet.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Helmet.Filename);
-                itemBinary.Flags = creFile.Items.Helmet.Flags;
+                itemBinary.Flags = creFile.Items.Helmet.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[0] = itemCount;
@@ -156,7 +156,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Armor.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Armor.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Armor.Filename);
-                itemBinary.Flags = creFile.Items.Armor.Flags;
+                itemBinary.Flags = creFile.Items.Armor.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[1] = itemCount;
@@ -172,7 +172,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Shield.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Shield.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Shield.Filename);
-                itemBinary.Flags = creFile.Items.Shield.Flags;
+                itemBinary.Flags = creFile.Items.Shield.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[2] = itemCount;
@@ -188,7 +188,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Gloves.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Gloves.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Gloves.Filename);
-                itemBinary.Flags = creFile.Items.Gloves.Flags;
+                itemBinary.Flags = creFile.Items.Gloves.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[3] = itemCount;
@@ -204,7 +204,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.RingLeft.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.RingLeft.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.RingLeft.Filename);
-                itemBinary.Flags = creFile.Items.RingLeft.Flags;
+                itemBinary.Flags = creFile.Items.RingLeft.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[4] = itemCount;
@@ -220,7 +220,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.RingRight.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.RingRight.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.RingRight.Filename);
-                itemBinary.Flags = creFile.Items.RingRight.Flags;
+                itemBinary.Flags = creFile.Items.RingRight.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[5] = itemCount;
@@ -237,7 +237,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Amulet.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Amulet.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Amulet.Filename);
-                itemBinary.Flags = creFile.Items.Amulet.Flags;
+                itemBinary.Flags = creFile.Items.Amulet.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[6] = itemCount;
@@ -253,7 +253,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Belt.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Belt.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Belt.Filename);
-                itemBinary.Flags = creFile.Items.Amulet.Flags;
+                itemBinary.Flags = creFile.Items.Amulet.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[7] = itemCount;
@@ -269,7 +269,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Boots.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Boots.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Boots.Filename);
-                itemBinary.Flags = creFile.Items.Boots.Flags;
+                itemBinary.Flags = creFile.Items.Boots.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[8] = itemCount;
@@ -285,7 +285,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Weapon1.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Weapon1.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Weapon1.Filename);
-                itemBinary.Flags = creFile.Items.Weapon1.Flags;
+                itemBinary.Flags = creFile.Items.Weapon1.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[9] = itemCount;
@@ -301,7 +301,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Weapon2.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Weapon2.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Weapon2.Filename);
-                itemBinary.Flags = creFile.Items.Weapon2.Flags;
+                itemBinary.Flags = creFile.Items.Weapon2.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[10] = itemCount;
@@ -317,7 +317,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Weapon3.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Weapon3.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Weapon3.Filename);
-                itemBinary.Flags = creFile.Items.Weapon3.Flags;
+                itemBinary.Flags = creFile.Items.Weapon3.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[11] = itemCount;
@@ -333,7 +333,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Weapon4.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Weapon4.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Weapon4.Filename);
-                itemBinary.Flags = creFile.Items.Weapon4.Flags;
+                itemBinary.Flags = creFile.Items.Weapon4.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[12] = itemCount;
@@ -349,7 +349,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Quiver1.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Quiver1.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Quiver1.Filename);
-                itemBinary.Flags = creFile.Items.Quiver1.Flags;
+                itemBinary.Flags = creFile.Items.Quiver1.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[13] = itemCount;
@@ -365,7 +365,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Quiver2.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Quiver2.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Quiver2.Filename);
-                itemBinary.Flags = creFile.Items.Quiver2.Flags;
+                itemBinary.Flags = creFile.Items.Quiver2.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[14] = itemCount;
@@ -381,7 +381,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Quiver3.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Quiver3.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Quiver3.Filename);
-                itemBinary.Flags = creFile.Items.Quiver3.Flags;
+                itemBinary.Flags = creFile.Items.Quiver3.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[15] = itemCount;
@@ -397,7 +397,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Unknown.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Unknown.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Unknown.Filename);
-                itemBinary.Flags = creFile.Items.Unknown.Flags;
+                itemBinary.Flags = creFile.Items.Unknown.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[16] = itemCount;
@@ -413,7 +413,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Cloak.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Cloak.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Cloak.Filename);
-                itemBinary.Flags = creFile.Items.Cloak.Flags;
+                itemBinary.Flags = creFile.Items.Cloak.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[17] = itemCount;
@@ -429,7 +429,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Amulet.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Amulet.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Amulet.Filename);
-                itemBinary.Flags = creFile.Items.Amulet.Flags;
+                itemBinary.Flags = creFile.Items.Amulet.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[18] = itemCount;
@@ -445,7 +445,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Amulet.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Amulet.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Amulet.Filename);
-                itemBinary.Flags = creFile.Items.Amulet.Flags;
+                itemBinary.Flags = creFile.Items.Amulet.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[19] = itemCount;
@@ -461,7 +461,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.Amulet.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.Amulet.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.Amulet.Filename);
-                itemBinary.Flags = creFile.Items.Amulet.Flags;
+                itemBinary.Flags = creFile.Items.Amulet.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[20] = itemCount;
@@ -477,7 +477,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem1.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem1.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem1.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem1.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem1.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[21] = itemCount;
@@ -493,7 +493,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem2.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem2.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem2.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem2.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem2.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[22] = itemCount;
@@ -509,7 +509,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem3.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem3.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem3.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem3.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem3.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[23] = itemCount;
@@ -525,7 +525,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem4.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem4.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem4.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem4.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem4.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[24] = itemCount;
@@ -541,7 +541,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem5.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem5.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem5.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem5.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem5.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[25] = itemCount;
@@ -557,7 +557,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem6.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem6.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem6.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem6.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem6.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[26] = itemCount;
@@ -573,7 +573,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem7.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem7.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem7.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem7.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem7.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[27] = itemCount;
@@ -589,7 +589,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem8.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem8.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem8.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem8.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem8.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[28] = itemCount;
@@ -605,7 +605,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem9.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem9.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem9.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem9.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem9.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[29] = itemCount;
@@ -621,7 +621,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem10.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem10.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem10.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem10.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem10.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[30] = itemCount;
@@ -637,7 +637,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem11.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem11.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem11.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem11.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem11.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[31] = itemCount;
@@ -653,7 +653,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem12.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem12.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem12.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem12.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem12.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[32] = itemCount;
@@ -669,7 +669,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem13.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem13.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem13.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem13.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem13.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[33] = itemCount;
@@ -685,7 +685,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem14.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem14.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem14.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem14.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem14.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[34] = itemCount;
@@ -701,7 +701,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem15.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem15.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem15.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem15.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem15.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[35] = itemCount;
@@ -717,7 +717,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.InventoryItem16.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.InventoryItem16.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.InventoryItem16.Filename);
-                itemBinary.Flags = creFile.Items.InventoryItem16.Flags;
+                itemBinary.Flags = creFile.Items.InventoryItem16.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[36] = itemCount;
@@ -733,7 +733,7 @@ namespace iiInfinityEngine.Core.Writers
                 itemBinary.ExpiryHour = creFile.Items.MagicWeapon.ExpiryHour;
                 itemBinary.ExpiryValue = creFile.Items.MagicWeapon.ExpiryValue;
                 itemBinary.Filename = new array8(creFile.Items.MagicWeapon.Filename);
-                itemBinary.Flags = creFile.Items.MagicWeapon.Flags;
+                itemBinary.Flags = creFile.Items.MagicWeapon.flags;
 
                 creItems.Add(itemBinary);
                 creItemSlots[37] = itemCount;

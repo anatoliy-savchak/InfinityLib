@@ -513,9 +513,9 @@ namespace iiInfinityEngine.Core.Binary
         public Int32 SongCount;
         public Int32 ShapesOffset;
         public Int32 ShapesCount;
-        public Int32 ItemSlotsOffset;
-        public Int32 ItemsOffset;
-        public Int32 ItemsCount;
+        public Int32 ItemSlotOffset;
+        public Int32 ItemOffset;
+        public Int32 ItemCount;
         public Int32 EffectsOffset;
         public Int32 EffectsCount;
 
@@ -640,8 +640,20 @@ namespace iiInfinityEngine.Core.Binary
         public Int16 Charges1 { get; set; }
         public Int16 Charges2 { get; set; }
         public Int16 Charges3 { get; set; }
-        public Int32 Flags { get; set; }
+        public UInt32 Flags { get; set; }
     }
+
+    [Serializable]
+    [Flags]
+    public enum CreItemBinaryFlags : UInt32
+    {
+        //None = 0,
+        Identified = 1 << 0,
+        Unstealable = 1 << 1,
+        Stolen = 1 << 2,
+        Magical = 1 << 3
+    }
+
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct CreKnownSpell

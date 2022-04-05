@@ -63,6 +63,8 @@ namespace iiInfinityEngine.Core.Readers
             if (header.ftype.ToString() != "CRE ")
                 return new CreFile();
 
+            List<CreItemBinary> creItems = new List<CreItemBinary>();
+            List<short> creItemSlots = new List<short>();
 
             if (version == "V2.2")
             {
@@ -357,7 +359,73 @@ namespace iiInfinityEngine.Core.Readers
 
                 creFile22.dialogFile = header.DialogFile;
 
-                return creFile22;
+                br.BaseStream.Seek(header.ItemOffset, SeekOrigin.Begin);
+                for (int i = 0; i < header.ItemCount; i++)
+                {
+                    var creItem = (CreItemBinary)Common.ReadStruct(br, typeof(CreItemBinary));
+                    creItems.Add(creItem);
+                }
+
+
+                var interimItems = new List<CreItem2>();
+                foreach (var creItem in creItems)
+                {
+                    CreItem2 creItem2 = new CreItem2();
+
+                    creItem2.Charges1 = creItem.Charges1;
+                    creItem2.Charges2 = creItem.Charges2;
+                    creItem2.Charges3 = creItem.Charges3;
+                    creItem2.ExpiryHour = creItem.ExpiryHour;
+                    creItem2.ExpiryValue = creItem.ExpiryValue;
+                    creItem2.Filename = creItem.Filename.ToString();
+                    creItem2.flags = creItem.Flags;
+                    interimItems.Add(creItem2);
+                }
+
+
+                {
+                    List<CreItemSlot> itemSlots = new List<CreItemSlot>();
+                    br.BaseStream.Seek(header.ItemSlotOffset, SeekOrigin.Begin);
+                    //for (int i = 0; i < 52; i++)
+                    short i = -1;
+                    short selectedWeapon = -1;
+                    foreach (string slot in Slots)
+                    {
+                        i++;
+                        short creItemSlot = (short)Common.ReadStruct(br, typeof(short));
+                        //creItemSlots.Add(creItemSlot);
+                        var itemSlot = new CreItemSlot()
+                        {
+                            SlotCode = slot,
+                            SlotIndex = i,
+                            SlotItemIndex = creItemSlot
+                        };
+                        bool isEmpty = true;
+                        if ((creItemSlot != -1) && (!slot.Contains("SELECTED")))
+                        {
+                            itemSlot.Item = interimItems[creItemSlot];
+                            isEmpty = false;
+                        } else
+                        if (slot.Contains("SELECTED"))
+                        {
+                            if (slot == "SLOT_SELECTED_WEAPON")
+                            { 
+                                isEmpty = creItemSlot >= 0;
+                                selectedWeapon = creItemSlot;
+                            }
+                            if (slot == "SLOT_SELECTED_WEAPON_ABILITY")
+                            {
+                                isEmpty = selectedWeapon >= 0;
+                            }
+                        }
+                        if (!isEmpty)
+                            itemSlots.Add(itemSlot);
+                    }
+                    creFile22.Items = itemSlots.ToArray();
+                }
+
+
+
             }
             else
             {
@@ -615,8 +683,6 @@ namespace iiInfinityEngine.Core.Readers
                 List<CreMemorisedSpellBinary> creMemorisedSpells = new List<CreMemorisedSpellBinary>();
                 List<Eff1BinaryBinary> creEffects1 = new List<Eff1BinaryBinary>();
                 List<EmbeddedEffBinary> creEffects2 = new List<EmbeddedEffBinary>();
-                List<CreItemBinary> creItems = new List<CreItemBinary>();
-                List<short> creItemSlots = new List<short>();
 
                 br.BaseStream.Seek(header.KnownSpellsoffset, SeekOrigin.Begin);
                 for (int i = 0; i < header.KnownSpellsCount; i++)
@@ -653,21 +719,6 @@ namespace iiInfinityEngine.Core.Readers
                         creEffects2.Add(creEffect);
                     }
                 }
-
-                br.BaseStream.Seek(header.ItemOffset, SeekOrigin.Begin);
-                for (int i = 0; i < header.ItemCount; i++)
-                {
-                    var creItem = (CreItemBinary)Common.ReadStruct(br, typeof(CreItemBinary));
-                    creItems.Add(creItem);
-                }
-
-                br.BaseStream.Seek(header.ItemSlotOffset, SeekOrigin.Begin);
-                for (int i = 0; i < 40; i++)
-                {
-                    var creItemSlot = (short)Common.ReadStruct(br, typeof(short));
-                    creItemSlots.Add(creItemSlot);
-                }
-
 
                 foreach (var creEffect in creEffects1)
                 {
@@ -846,6 +897,20 @@ namespace iiInfinityEngine.Core.Readers
                     //We've assumed all innates are level 1
                 }
 
+                br.BaseStream.Seek(header.ItemOffset, SeekOrigin.Begin);
+                for (int i = 0; i < header.ItemCount; i++)
+                {
+                    var creItem = (CreItemBinary)Common.ReadStruct(br, typeof(CreItemBinary));
+                    creItems.Add(creItem);
+                }
+
+                br.BaseStream.Seek(header.ItemSlotOffset, SeekOrigin.Begin);
+                for (int i = 0; i < 40; i++)
+                {
+                    var creItemSlot = (short)Common.ReadStruct(br, typeof(short));
+                    creItemSlots.Add(creItemSlot);
+                }
+
                 var interimItems = new List<CreItem2>();
                 foreach (var creItem in creItems)
                 {
@@ -857,7 +922,7 @@ namespace iiInfinityEngine.Core.Readers
                     creItem2.ExpiryHour = creItem.ExpiryHour;
                     creItem2.ExpiryValue = creItem.ExpiryValue;
                     creItem2.Filename = creItem.Filename.ToString();
-                    creItem2.Flags = creItem.Flags;
+                    creItem2.flags = creItem.Flags;
                     interimItems.Add(creItem2);
                 }
 
@@ -906,7 +971,11 @@ namespace iiInfinityEngine.Core.Readers
                 }
             }
 
-            creFile.Checksum = MD5HashGenerator.GenerateKey(creFile);
+
+            //creFile.Checksum = MD5HashGenerator.GenerateKey(creFile);
+            if (creFile22 != null)
+                return creFile22;
+
             return creFile;
         }
 
@@ -945,5 +1014,60 @@ namespace iiInfinityEngine.Core.Readers
             }
             return result;
         }
+
+        public static string[] Slots = {
+            "SLOT_HELMET",
+            "SLOT_ARMOR",
+            "SLOT_SHIELD",
+            "SLOT_GAUNTLETS",
+            "SLOT_RING_LEFT",
+            "SLOT_RING_RIGHT",
+            "SLOT_AMULET",
+            "SLOT_BELT",
+            "SLOT_BOOTS",
+            "SLOT_WEAPON1",
+            "SLOT_SHIELD1",
+            "SLOT_WEAPON2",
+            "SLOT_SHIELD2",
+            "SLOT_WEAPON3",
+            "SLOT_SHIELD3",
+            "SLOT_WEAPON4",
+            "SLOT_SHIELD4",
+            "SLOT_AMMO1",
+            "SLOT_AMMO2",
+            "SLOT_AMMO3",
+            "SLOT_AMMO4",
+            "SLOT_CLOAK",
+            "SLOT_QUICK1",
+            "SLOT_QUICK2",
+            "SLOT_QUICK3",
+            "SLOT_INV1",
+            "SLOT_INV2",
+            "SLOT_INV3",
+            "SLOT_INV4",
+            "SLOT_INV5",
+            "SLOT_INV6",
+            "SLOT_INV7",
+            "SLOT_INV8",
+            "SLOT_INV9",
+            "SLOT_INV10",
+            "SLOT_INV11",
+            "SLOT_INV12",
+            "SLOT_INV13",
+            "SLOT_INV14",
+            "SLOT_INV15",
+            "SLOT_INV16",
+            "SLOT_INV17",
+            "SLOT_INV18",
+            "SLOT_INV19",
+            "SLOT_INV20",
+            "SLOT_INV21",
+            "SLOT_INV22",
+            "SLOT_INV23",
+            "SLOT_INV24",
+            "SLOT_MAGIC_WEAPON",
+            "SLOT_SELECTED_WEAPON",
+            "SLOT_SELECTED_WEAPON_ABILITY"
+        };
     }
 }
