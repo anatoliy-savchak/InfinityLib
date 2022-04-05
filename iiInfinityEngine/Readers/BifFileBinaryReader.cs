@@ -26,6 +26,7 @@ namespace iiInfinityEngine.Core.Readers
         List<AreFile> areas = new List<AreFile>();
         List<WmpFile> worldmaps = new List<WmpFile>();
         List<VvcFile> vvcs = new List<VvcFile>();
+        List<DlgFile> dialogs = new List<DlgFile>();
 
         public TlkFile TlkFile { get; set; }
         public Game game;
@@ -119,6 +120,22 @@ namespace iiInfinityEngine.Core.Readers
                                             area.Filename = resource.ResourceName + "." + resource.ResourceType;
                                         }
                                         areas.Add(area);
+                                    }
+                                    catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
+                                    break;
+
+                                case IEFileType.Dlg:
+                                    try
+                                    {
+                                        resource = resources.Where(a => a.NonTileSetIndex == (f.resourceLocator & 0xFFF)).SingleOrDefault();
+                                        if (resource != null)
+                                        {
+                                            DlgFileBinaryReader reader = new DlgFileBinaryReader();
+                                            reader.TlkFile = TlkFile;
+                                            var obj = reader.Read(ms);
+                                            obj.Filename = resource.ResourceName + "." + resource.ResourceType;
+                                            dialogs.Add(obj);
+                                        }
                                     }
                                     catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
                                     break;
@@ -314,6 +331,7 @@ namespace iiInfinityEngine.Core.Readers
                 bifFile.areas = areas;
                 bifFile.worldmaps = worldmaps;
                 bifFile.vvcs = vvcs;
+                bifFile.dlgs = dialogs;
                 return bifFile;
             }
             finally

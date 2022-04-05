@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -47,7 +48,8 @@ public class MD5HashGenerator
             }
             catch (SerializationException se)
             {
-                Console.WriteLine("An error occured during serialization. " + se.Message);
+                Debug.WriteLine("An error occured during serialization. " + se.Message);
+                //Console.WriteLine("An error occured during serialization. " + se.Message);
                 return null;
             }
         }

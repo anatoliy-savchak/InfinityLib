@@ -20,7 +20,8 @@ namespace iiInfinityEngine.Core.Files
         public List<AreFile> areas = new List<AreFile>();
         public List<WmpFile> worldmaps = new List<WmpFile>();
         public List<VvcFile> vvcs = new List<VvcFile>();
-        
+        public List<DlgFile> dlgs = new List<DlgFile>();
+
         public Int32 FileCount;
         public Int32 TilesetCount;
         public Int32 FileOffset;

@@ -36,6 +36,7 @@ namespace iiInfinityEngine.Core
         public List<StoFile> Stores = new List<StoFile>();
         public List<VvcFile> VisualEffects = new List<VvcFile>();
         public List<WfxFile> Wfxs = new List<WfxFile>();
+        public List<DlgFile> Dlgs = new List<DlgFile>();
 
         public TlkFile Tlk { get; private set; }
 
@@ -172,6 +173,7 @@ namespace iiInfinityEngine.Core
                         Stores.AddRange(bifFile.stores);
                         VisualEffects.AddRange(bifFile.vvcs);
                         Wfxs.AddRange(bifFile.wfx);
+                        Dlgs.AddRange(bifFile.dlgs);
                     }
                 }
                 bifIndex++;
