@@ -448,6 +448,7 @@ namespace iiInfinityEngine.Core.Files
         public Int16 CurrentHP;
         public Int16 MaximumHP;
         public Int32 Animation;
+        public string AnimationNameCalc;
         public Int16 Unknown;
         public byte MetalColourIndex;
         public byte MinorColourIndex;
@@ -456,6 +457,15 @@ namespace iiInfinityEngine.Core.Files
         public byte LeatherColourIndex;
         public byte ArmorColourIndex;
         public byte HairColourIndex;
+
+        public string MetalColourName;
+        public string MinorColourName;
+        public string MajorColourName;
+        public string SkinColourName;
+        public string LeatherColourName;
+        public string ArmorColourName;
+        public string HairColourName;
+
         public byte EffVersion;
         [NonSerialized]
         public array8 smallPortrait;

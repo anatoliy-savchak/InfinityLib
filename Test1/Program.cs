@@ -134,8 +134,41 @@ namespace Test1
                 game.LoadResources(IEFileType.Spl);
                 game.LoadResources(IEFileType.Ids);
 
+
+                //if (true) // find colors ids: CLOWNCLR.Ids
+                //{
+                //    var ids = game.Identifiers.Where(ids => ids.contents != null && ids.contents.Contains("Cloth Lt Red", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                //}
+
                 var racesIds = LoadIds("race");
                 var races = racesIds.contents.Split(Environment.NewLine);
+
+                Dictionary<Int32, string> animations = new Dictionary<int, string>();
+                {
+                    var animateIds = LoadIds("animate");
+                    foreach (string line in animateIds.contents.Split(Environment.NewLine))
+                    {
+                        int pos = line.IndexOf(' ');
+                        if (pos < 0) continue;
+                        string hexstr = line.Substring(0, pos).Trim();
+                        Int32 value = Convert.ToInt32(hexstr, 16);
+                        string name = line.Substring(pos + 1).Trim();
+                        animations[value] = name;
+                    }
+                }
+                Dictionary<byte, string> colorsDict = new Dictionary<byte, string>();
+                {
+                    var ids = LoadIds("clownclr");
+                    foreach (string line in ids.contents.Split(Environment.NewLine))
+                    {
+                        int pos = line.IndexOf('\t');
+                        if (pos < 0) continue;
+                        string intstr = line.Substring(0, pos).Trim();
+                        byte value = byte.Parse(intstr);
+                        string name = line.Substring(pos + 1).Trim();
+                        colorsDict[value] = name;
+                    }
+                }
 
                 bool saveCre = true;
                 bool saveDlg = false;
@@ -202,6 +235,44 @@ namespace Test1
                                                 if (!string.IsNullOrEmpty(cre22.RaceName))
                                                     cre22.RaceName = cre22.RaceName.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1];
                                                 //cre22.RaceName = races[cre22.Race];
+                                            }
+
+                                            if (cre22.Animation != 0)
+                                            {
+                                                string value;
+                                                if (cre22.Animation != 0 && animations.TryGetValue(cre22.Animation, out value)) {
+                                                    cre22.AnimationNameCalc = value;
+                                                    value = null;
+                                                }
+
+                                                if (colorsDict.TryGetValue(cre22.MetalColourIndex, out value)) {
+                                                    cre22.MetalColourName = value;
+                                                    value = null;
+                                                }
+                                                if (colorsDict.TryGetValue(cre22.MinorColourIndex, out value)) {
+                                                    cre22.MinorColourName = value;
+                                                    value = null;
+                                                }
+                                                if (colorsDict.TryGetValue(cre22.MajorColourIndex, out value)) {
+                                                    cre22.MajorColourName = value;
+                                                    value = null;
+                                                }
+                                                if (colorsDict.TryGetValue(cre22.SkinColourIndex, out value)) {
+                                                    cre22.SkinColourName = value;
+                                                    value = null;
+                                                }
+                                                if (colorsDict.TryGetValue(cre22.LeatherColourIndex, out value)) {
+                                                    cre22.LeatherColourName = value;
+                                                    value = null;
+                                                }
+                                                if (colorsDict.TryGetValue(cre22.ArmorColourIndex, out value)) {
+                                                    cre22.ArmorColourName = value;
+                                                    value = null;
+                                                }
+                                                if (colorsDict.TryGetValue(cre22.HairColourIndex, out value)) {
+                                                    cre22.HairColourName = value;
+                                                    value = null;
+                                                }
                                             }
                                         }
 
