@@ -164,6 +164,7 @@ namespace iiInfinityEngine.Core.Readers
                                         if (resource != null)
                                         {
                                             identifier.Filename = resource.ResourceName + "." + resource.ResourceType;
+                                            Debug.WriteLine($"Loaded IDS: {identifier.Filename}");
                                         }
                                         identifiers.Add(identifier);
                                     }
@@ -228,7 +229,7 @@ namespace iiInfinityEngine.Core.Readers
                                         ItmFileBinaryReader itm = new ItmFileBinaryReader();
                                         itm.TlkFile = TlkFile;
                                         var item = (ItmFile)itm.Read(ms);
-                                        resource = resources.Where(a => a.NonTileSetIndex == (f.resourceLocator & 0xFFF)).SingleOrDefault();
+                                        resource = resources.Where(a => a.NonTileSetIndex == (f.resourceLocator & 0xFFF)).FirstOrDefault();
                                         if (resource != null)
                                         {
                                             item.Filename = resource.ResourceName + "." + resource.ResourceType;
@@ -244,7 +245,7 @@ namespace iiInfinityEngine.Core.Readers
                                         SplFileBinaryReader spl = new SplFileBinaryReader();
                                         spl.TlkFile = TlkFile;
                                         var spell = (SplFile)spl.Read(ms);
-                                        resource = resources.Where(a => a.NonTileSetIndex == (f.resourceLocator & 0xFFF)).SingleOrDefault();
+                                        resource = resources.Where(a => a.NonTileSetIndex == (f.resourceLocator & 0xFFF)).FirstOrDefault();
                                         if (resource != null)
                                         {
                                             spell.Filename = resource.ResourceName + "." + resource.ResourceType;

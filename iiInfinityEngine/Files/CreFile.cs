@@ -81,7 +81,7 @@ namespace iiInfinityEngine.Core.Files
         public Int32 XPReward;
         public Int32 PowerLevel;
         public Int32 Gold;
-        public Int32 StatusFlags; // state.ids
+        public UInt32 StatusFlags; // state.ids
         public Int16 CurrentHP;
         public Int16 MaximumHP;
         public Int32 Animation;
@@ -444,7 +444,7 @@ namespace iiInfinityEngine.Core.Files
         public Int32 XPReward;
         public Int32 PowerLevel;
         public Int32 Gold;
-        public Int32 StatusFlags; // state.ids
+        public CreStateFlags StatusFlags; // state.ids
         public Int16 CurrentHP;
         public Int16 MaximumHP;
         public Int32 Animation;
@@ -681,6 +681,8 @@ namespace iiInfinityEngine.Core.Files
         public UInt16 ClassMsk;
 
         public CreItemSlot[] Items;
+
+        public string RaceName;
     }
 
     [Serializable]
@@ -691,6 +693,8 @@ namespace iiInfinityEngine.Core.Files
         public short SlotItemIndex;
         public CreItem2? Item;
         public string ItemNameEval;
+        public string ItemTypeEval;
+        public bool ItemDroppableEval;
     }
 
 
@@ -877,6 +881,45 @@ namespace iiInfinityEngine.Core.Files
         {
             return $"{SpellName} {Remaining}/{Memorized}";
         }
+    }
+
+    [Serializable]
+    [Flags]
+    public enum CreStateFlags: UInt32
+    {
+        STATE_NORMAL = 0x00000000,
+        STATE_DEAD = 0x00000800,
+        STATE_ACID_DEATH = 0x00000400,
+        STATE_FLAME_DEATH = 0x00000200,
+        STATE_EXPLODING_DEATH = 0x00000100,
+        STATE_STONE_DEATH = 0x00000080,
+        STATE_FROZEN_DEATH = 0x00000040,
+        STATE_HELPLESS = 0x00000020,
+        STATE_INVISIBLE = 0x00000010,
+        STATE_STUNNED = 0x00000008,
+        STATE_PANIC = 0x00000004,
+        STATE_BERSERK = 0x00000002,
+        STATE_SLEEPING = 0x00000001,
+        STATE_SILENCED = 0x00001000,
+        STATE_CHARMED = 0x00002000,
+        STATE_POISONED = 0x00004000,
+        STATE_HASTED = 0x00008000,
+        STATE_SLOWED = 0x00010000,
+        STATE_INFRAVISION = 0x00020000,
+        STATE_BLIND = 0x00040000,
+        STATE_DISEASED = 0x00080000,
+        STATE_FEEBLEMINDED = 0x00100000,
+        STATE_NONDETECTION = 0x00200000,
+        STATE_IMPROVEDINVISIBILITY = 0x00400000,
+        STATE_BLESS = 0x00800000,
+        STATE_CHANT = 0x01000000,
+        STATE_FADE_IN = 0x02000000,
+        STATE_FADE_OUT = 0x04000000,
+        STATE_AID = 0x08000000,
+        STATE_SUMMONED_CREATURE = 0x10000000,
+        STATE_BLUR = 0x20000000,
+        STATE_MIRRORIMAGE = 0x40000000,
+        STATE_CONFUSED = 0x80000000
     }
 
 }

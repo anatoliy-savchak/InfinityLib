@@ -64,6 +64,16 @@ namespace Test1
                 return obj;
             };
 
+            IdsFile LoadIds(string name)
+            {
+                string nameLower = name.ToLowerInvariant();
+                var obj = game.Identifiers.Where(b => !String.IsNullOrEmpty(b.Filename) && b.Filename.ToLowerInvariant() == $"{nameLower}.ids").SingleOrDefault();
+                if (obj == null)
+                    game.LoadResouce(nameLower, IEFileType.Ids);
+                obj = game.Identifiers.Where(b => !String.IsNullOrEmpty(b.Filename) && b.Filename.ToLowerInvariant() == $"{nameLower}.ids").SingleOrDefault();
+                return obj;
+            };
+
             if (false)
             {
                 var area = game.Areas.Where(a => a.Filename.ToLowerInvariant() == "ar1000.are").SingleOrDefault();
@@ -116,110 +126,200 @@ namespace Test1
                 string outDlgDir = Path.Combine(outDir, "Dialogs");
                 if (!Directory.Exists(outDlgDir)) Directory.CreateDirectory(outDlgDir);
 
+                string outItmDir = Path.Combine(outDir, "Items");
+                if (!Directory.Exists(outItmDir)) Directory.CreateDirectory(outItmDir);
+
                 LoadDim("LISTSPLL");
                 game.LoadResources(IEFileType.Tlk);
                 game.LoadResources(IEFileType.Spl);
-                string dir;
-                List<CreFile> alreadyCre = new List<CreFile>();
-                Dictionary<string, DlgFile> alreadyDlg = new Dictionary<string, DlgFile>();
-                foreach (var area in game.Areas.ToArray())
+                game.LoadResources(IEFileType.Ids);
+
+                var racesIds = LoadIds("race");
+                var races = racesIds.contents.Split(Environment.NewLine);
+
+                bool saveCre = true;
+                bool saveDlg = false;
+                bool saveAre = false;
+
+                // process areas, actors and cre
+                if (true)
                 {
-                    string nameArea = area.Filename.Replace(".Are", string.Empty);
-                    dir = Path.Combine(outAreaDir, nameArea);
-                    if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+                    string filterActor = null;// "Hedron";
 
-                    foreach (AreActor2 actor in area.actors)
+                    string dir;
+                    List<CreFile> alreadyCre = new List<CreFile>();
+                    Dictionary<string, DlgFile> alreadyDlg = new Dictionary<string, DlgFile>();
+                    foreach (AreFile area in game.Areas.ToArray())
                     {
-                        string nameActor = actor.Name;
-                        string content = JsonConvert.SerializeObject(actor, Formatting.Indented,
-                            new Newtonsoft.Json.JsonSerializerSettings()
-                            {
-                                Converters = new List<Newtonsoft.Json.JsonConverter>
-                                {
-                                                    new Newtonsoft.Json.Converters.StringEnumConverter()
-                                }
-                            }
-                            );
+                        string nameArea = area.Filename.Replace(".Are", string.Empty);
+                        dir = Path.Combine(outAreaDir, nameArea);
+                        if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-                        string fileName = Path.Combine(dir, nameActor) + ".json";
-                        string logStr = fileName.Substring(outDir.Length);
-                        //Console.WriteLine(logStr);
-                        Debug.WriteLine(logStr);
-                        File.WriteAllText(fileName, content);
-
-                        CreFile cre = LoadCre(actor.CREFile);
-                        if (cre != null)
+                        if (true)
                         {
-                            if (!alreadyCre.Contains(cre))
+                            foreach (AreActor2 actor in area.actors)
                             {
-                                for(int i=0; i < ((CreFile22)cre).Items.Length; i++)
-                                //foreach(var item in ((CreFile22)cre).Items)
+                                string nameActor = actor.Name;
+                                if (!string.IsNullOrEmpty(filterActor) && nameActor != filterActor) continue;
+                                if (nameActor == "Door_Hint_Text_00") {; }
+                                string actorfileName = Path.Combine(dir, nameActor) + ".json";
+                                string logStr = actorfileName.Substring(outDir.Length);
+                                Console.WriteLine(logStr);
+                                //Debug.WriteLine(logStr);
+
+                                CreFile cre = LoadCre(actor.CREFile);
+                                CreFile22 cre22 = (CreFile22)cre;
+                                if (cre != null)
                                 {
-                                    var item = ((CreFile22)cre).Items[i];
-                                    if ((item.Item.HasValue) && (string.IsNullOrEmpty(item.ItemNameEval)) && (!string.IsNullOrEmpty(item.Item.Value.Filename)))
+                                    actor.DefaultHiddenCalc = cre22.Hidden == 1;
+                                    if (!alreadyCre.Contains(cre) && saveCre)
                                     {
-                                        var itemObj = LoadItem(item.Item.Value.Filename);
-                                        if (itemObj != null)
+                                        // post-process items
+                                        if (true)
                                         {
-                                            item.ItemNameEval = itemObj.IdentifiedName.Text;
-                                        }
-                                    }
-                                }
-
-                                string nameCre = cre.Filename.Replace(".Cre", string.Empty);
-                                content = JsonConvert.SerializeObject(cre, Formatting.Indented,
-                                    new Newtonsoft.Json.JsonSerializerSettings()
-                                    {
-                                        Converters = new List<Newtonsoft.Json.JsonConverter>
-                                        {
-                                                    new Newtonsoft.Json.Converters.StringEnumConverter()
-                                        }
-                                    }
-                                    );
-
-                                fileName = Path.Combine(outCreDir, nameCre) + ".json";
-                                Debug.WriteLine($"{fileName.Substring(outDir.Length)}");
-                                File.WriteAllText(fileName, content);
-
-                                alreadyCre.Add(cre);
-                            }
-
-                            {
-                                var dialogFile = ((CreFile22)cre).DialogFile;
-                                if (!string.IsNullOrWhiteSpace(dialogFile) && dialogFile.ToLowerInvariant() != "none" && !alreadyDlg.ContainsKey(dialogFile))
-                                {
-                                    DlgFile dlg = LoadDlg(dialogFile);
-
-                                    if (dlg != null)
-                                    {
-                                        string nameDlg = dlg.Filename.Replace(".Dlg", string.Empty);
-                                        content = JsonConvert.SerializeObject(dlg, Formatting.Indented,
-                                            new Newtonsoft.Json.JsonSerializerSettings()
+                                            for (int i = 0; i < ((CreFile22)cre).Items.Length; i++)
+                                            //foreach(var item in ((CreFile22)cre).Items)
                                             {
-                                                Converters = new List<Newtonsoft.Json.JsonConverter>
+                                                var item = ((CreFile22)cre).Items[i];
+                                                if ((item.Item.HasValue) && (string.IsNullOrEmpty(item.ItemNameEval)) && (!string.IsNullOrEmpty(item.Item.Value.Filename)))
                                                 {
-                                                    new Newtonsoft.Json.Converters.StringEnumConverter()
+                                                    var itemObj = LoadItem(item.Item.Value.Filename);
+                                                    if (itemObj != null)
+                                                    {
+                                                        item.ItemNameEval = itemObj.IdentifiedName.Text;
+                                                        item.ItemTypeEval = itemObj.ItemType.ToString();
+                                                        item.ItemDroppableEval = itemObj.Flags.Movable;
+                                                    }
                                                 }
                                             }
-                                            );
-                                        fileName = Path.Combine(outDlgDir, nameDlg) + ".json";
-                                        Debug.WriteLine($"{fileName.Substring(outDir.Length)}");
-                                        File.WriteAllText(fileName, content);
+                                        }
 
-                                        alreadyDlg.Add(dialogFile, dlg);
-                                    } else
-                                    {
-                                        Console.WriteLine($"Dlg {dialogFile} is null!");
+                                        // post process lookups
+                                        {
+                                            if (cre22.Race >= 0)
+                                            {
+                                                cre22.RaceName = races.Where(line => line.StartsWith(cre22.Race.ToString() + ' ')).FirstOrDefault();
+                                                if (!string.IsNullOrEmpty(cre22.RaceName))
+                                                    cre22.RaceName = cre22.RaceName.Split(' ', StringSplitOptions.RemoveEmptyEntries)[1];
+                                                //cre22.RaceName = races[cre22.Race];
+                                            }
+                                        }
+
+                                        {
+                                            string nameCre = cre.Filename.Replace(".Cre", string.Empty);
+                                            string content = JsonConvert.SerializeObject(cre, Formatting.Indented,
+                                                new Newtonsoft.Json.JsonSerializerSettings()
+                                                {
+                                                    Converters = new List<Newtonsoft.Json.JsonConverter>
+                                                    {
+                                                    new Newtonsoft.Json.Converters.StringEnumConverter()
+                                                    }
+                                                }
+                                                );
+
+                                            string fileNameCre = Path.Combine(outCreDir, nameCre) + ".json";
+                                            Debug.WriteLine($"{fileNameCre.Substring(outDir.Length)}");
+                                            File.WriteAllText(fileNameCre, content);
+                                        }
+
+                                        alreadyCre.Add(cre);
                                     }
+
+                                    if (saveDlg)
+                                    {
+                                        var dialogFile = ((CreFile22)cre).DialogFile;
+                                        if (!string.IsNullOrWhiteSpace(dialogFile) && dialogFile.ToLowerInvariant() != "none" && !alreadyDlg.ContainsKey(dialogFile))
+                                        {
+                                            DlgFile dlg = LoadDlg(dialogFile);
+
+                                            if (dlg != null)
+                                            {
+                                                string nameDlg = dlg.Filename.Replace(".Dlg", string.Empty);
+                                                string content = JsonConvert.SerializeObject(dlg, Formatting.Indented,
+                                                    new Newtonsoft.Json.JsonSerializerSettings()
+                                                    {
+                                                        Converters = new List<Newtonsoft.Json.JsonConverter>
+                                                        {
+                                                    new Newtonsoft.Json.Converters.StringEnumConverter()
+                                                        }
+                                                    }
+                                                    );
+                                                string dlgfileName = Path.Combine(outDlgDir, nameDlg) + ".json";
+                                                Debug.WriteLine($"{dlgfileName.Substring(outDir.Length)}");
+                                                File.WriteAllText(dlgfileName, content);
+
+                                                alreadyDlg.Add(dialogFile, dlg);
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine($"Dlg {dialogFile} is null!");
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Cre is null!");
+                                }
+
+                                // remove
+                                if (false)
+                                {
+                                    string content = JsonConvert.SerializeObject(actor, Formatting.Indented,
+                                        new Newtonsoft.Json.JsonSerializerSettings()
+                                        {
+                                            Converters = new List<Newtonsoft.Json.JsonConverter>
+                                            {
+                                                    new Newtonsoft.Json.Converters.StringEnumConverter()
+                                            }
+                                        }
+                                        );
+
+                                    File.WriteAllText(actorfileName, content);
                                 }
                             }
                         }
-                        else
+
+                        if (saveAre)
                         {
-                            Console.WriteLine("Cre is null!");
+                            string content = JsonConvert.SerializeObject(area, Formatting.Indented,
+                                new Newtonsoft.Json.JsonSerializerSettings()
+                                {
+                                    Converters = new List<Newtonsoft.Json.JsonConverter>
+                                    {
+                                                    new Newtonsoft.Json.Converters.StringEnumConverter()
+                                    }
+                                }
+                                );
+
+                            string arefileName = Path.Combine(dir, nameArea) + ".json";
+                            File.WriteAllText(arefileName, content);
                         }
                     }
+                }
 
+                // process items
+                if (false)
+                {
+                    game.LoadResources(IEFileType.Itm);
+                    foreach (ItmFile item in game.Items)
+                    {
+                        string nameItem = item.Filename.Replace(".Are", string.Empty);
+                        {
+                            string content = JsonConvert.SerializeObject(item, Formatting.Indented,
+                                new Newtonsoft.Json.JsonSerializerSettings()
+                                {
+                                    Converters = new List<Newtonsoft.Json.JsonConverter>
+                                    {
+                                                    new Newtonsoft.Json.Converters.StringEnumConverter()
+                                    }
+                                }
+                                );
+
+                            string fileName = Path.Combine(outItmDir, Path.GetFileNameWithoutExtension(nameItem)) + ".json";
+                            File.WriteAllText(fileName, content);
+                        }
+                    }
                 }
             }
 

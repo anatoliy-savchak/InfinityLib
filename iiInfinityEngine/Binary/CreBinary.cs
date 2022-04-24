@@ -14,7 +14,7 @@ namespace iiInfinityEngine.Core.Binary
         public Int32 XPReward;
         public Int32 PowerLevel;
         public Int32 Gold;
-        public Int32 StatusFlags; // state.ids
+        public UInt32 StatusFlags; // state.ids
         public Int16 CurrentHP;
         public Int16 MaximumHP;
         public Int16 Animation;

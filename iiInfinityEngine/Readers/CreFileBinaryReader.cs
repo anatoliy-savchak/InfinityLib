@@ -74,7 +74,7 @@ namespace iiInfinityEngine.Core.Readers
                 creFile22.XPReward = header.XPReward;
                 creFile22.PowerLevel = header.PowerLevel;
                 creFile22.Gold = header.Gold;
-                creFile22.StatusFlags = header.StatusFlags;
+                creFile22.StatusFlags = (CreStateFlags)header.StatusFlags;
                 creFile22.CurrentHP = header.CurrentHP;
                 creFile22.MaximumHP = header.MaximumHP;
                 creFile22.Animation = header.Animation;
@@ -311,7 +311,7 @@ namespace iiInfinityEngine.Core.Readers
                             if (spellRef != null)
                             {
                                 var spellRefLower = spellRef.ToLowerInvariant();
-                                splFile = game.Spells.Where(b => !String.IsNullOrEmpty(b.Filename) && b.Filename.ToLowerInvariant() == $"{spellRefLower}.spl").SingleOrDefault();
+                                splFile = game.Spells.Where(b => !String.IsNullOrEmpty(b.Filename) && b.Filename.ToLowerInvariant() == $"{spellRefLower}.spl").FirstOrDefault();
                             }
                         }
                         string spellName = null;

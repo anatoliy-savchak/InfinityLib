@@ -66,13 +66,17 @@ namespace iiInfinityEngine.Core.Files
     }
 
     [Serializable]
-    public struct AreActor2
+    public class AreActor2
     {
         public string Name;
         public Int16 CurrentXCoordinate;
         public Int16 CurrentYCoordinate;
         public Int16 DestinationXCoordinate;
         public Int16 DestinationYCoordinate;
+        public Int16 CurrentXCoordinateSec;
+        public Int16 CurrentYCoordinateSec;
+        public Int16 DestinationXCoordinateSec;
+        public Int16 DestinationYCoordinateSec;
         public ActorFlags ActorFlags;
         public Int16 HasBeenSpawned;
         public byte FilenameInitialCharacter;
@@ -121,6 +125,7 @@ namespace iiInfinityEngine.Core.Files
         public string ScriptSpecial1; // team
         [NonSerialized]
         public array120 Unknown2;
+        public bool DefaultHiddenCalc;
     }
 
     [Serializable]
