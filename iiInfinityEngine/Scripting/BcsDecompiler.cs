@@ -29,7 +29,7 @@ namespace iiInfinityEngine.Core
         public void RefreshIdsFiles()
         {
             var objectIds = idsFiles.Where(a => a.Filename.ToLower() == "object.ids").SingleOrDefault();
-            var alignmenIds = idsFiles.Where(a => a.Filename.ToLower() == "alignmen.ids").SingleOrDefault();
+            var alignmenIds = idsFiles.Where(a => a.Filename.ToLower() == "alignmnt.ids").SingleOrDefault(); // ALIGNMNT.IDS
             var genderIds = idsFiles.Where(a => a.Filename.ToLower() == "gender.ids").SingleOrDefault();
             var specificIds = idsFiles.Where(a => a.Filename.ToLower() == "specific.ids").SingleOrDefault();
             var classIds = idsFiles.Where(a => a.Filename.ToLower() == "class.ids").SingleOrDefault();
@@ -56,6 +56,11 @@ namespace iiInfinityEngine.Core
         public List<string> Decompile(string filename, OverrideBehaviour overrideBehaviour = OverrideBehaviour.UseLast)
         {
             var lines = File.ReadAllLines(filename);
+            return DecompileLines(lines, overrideBehaviour);
+        }
+
+        public List<string> DecompileLines(string[] lines, OverrideBehaviour overrideBehaviour = OverrideBehaviour.UseLast)
+        {
             var output = new List<string>();
 
             var idx = 1;

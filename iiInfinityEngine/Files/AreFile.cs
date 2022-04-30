@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace iiInfinityEngine.Core.Files
 {
@@ -41,18 +43,23 @@ namespace iiInfinityEngine.Core.Files
         public Int32 LastSaved;
         public AreaFlags AreaFlags;
         public string AreaToTheNorth;
+        [NonSerialized]
         public Int32 Unknown1;
         public string AreaToTheEast;
+        [NonSerialized]
         public Int32 Unknown2;
         public string AreaToTheSouth;
+        [NonSerialized]
         public Int32 Unknown3;
         public string AreaToTheWest;
+        [NonSerialized]
         public Int32 Unknown4;
         public AreaTypeFlags AreaTypeFlags;
         public Int16 WeatherProbabilityRain;
         public Int16 WeatherProbabilitySnow;
         public Int16 WeatherProbabilityFog;// - not implemented 
         public Int16 WeatherProbabilityLightning;
+        [NonSerialized]
         public Int16 Unknown5;
         public Int32 VertexOffset;
         public Int16 VertexCount;
@@ -151,15 +158,21 @@ namespace iiInfinityEngine.Core.Files
         public Int16 TrapDetected;
         public Int16 TrapLaunchXCoordinate;
         public Int16 TrapLaunchYCoordinate;
+        public Int16 TrapLaunchXCoordinateSec;
+        public Int16 TrapLaunchYCoordinateSec;
         public string KeyItem;
         public string RegionScript;
         public Int16 AlternativeUsePointXCoordinate;
         public Int16 AlternativeUsePointYCoordinate;
+        public Int16 AlternativeUsePointXCoordinateSec;
+        public Int16 AlternativeUsePointYCoordinateSec;
         public Int32 Unknown2;
         public array32 Unknown3;
         public string Sound;
         public Int16 TalkLocationXCoordinate;
         public Int16 TalkLocationYCoordinate;
+        public Int16 TalkLocationXCoordinateSec;
+        public Int16 TalkLocationYCoordinateSec;
         public IEString DialogName;
         public string DialogFile;
     }
@@ -170,6 +183,8 @@ namespace iiInfinityEngine.Core.Files
         public string Name;
         public Int16 XCoordinate;
         public Int16 YCoordinate;
+        public Int16 XCoordinateSec;
+        public Int16 YCoordinateSec;
         public string Resref1;
         public string Resref2;
         public string Resref3;
@@ -222,6 +237,7 @@ namespace iiInfinityEngine.Core.Files
         //bit 0 = 00:30 to 01:29 
         public Int16 ProbabilityDay;
         public Int16 ProbabilityNight;
+        [NonSerialized]
         public array56 Unknown;
     }
 
@@ -231,7 +247,10 @@ namespace iiInfinityEngine.Core.Files
         public string Name;
         public Int16 XCoordinate;
         public Int16 YCoordinate;
+        public Int16 XCoordinateSec;
+        public Int16 YCoordinateSec;
         public Int16 Orientation;
+        [NonSerialized]
         public array66 Unknown;
     }
 
@@ -243,6 +262,8 @@ namespace iiInfinityEngine.Core.Files
         public string Name;
         public Int16 XCoordinate;
         public Int16 YCoordinate;
+        public Int16 XCoordinateSec;
+        public Int16 YCoordinateSec;
         public ContainerType ContainerType;
         public Int16 LockDifficulty;
         public ContainerFlags Flags;
@@ -252,6 +273,8 @@ namespace iiInfinityEngine.Core.Files
         public Int16 TrapDetected;
         public Int16 TrapLaunchXCoordinate;
         public Int16 TrapLaunchYCoordinate;
+        public Int16 TrapLaunchXCoordinateSec;
+        public Int16 TrapLaunchYCoordinateSec;
         public Int16 BoundingBoxLeft;
         public Int16 BoundingBoxTop;
         public Int16 BoundingBoxRight;
@@ -259,10 +282,13 @@ namespace iiInfinityEngine.Core.Files
         public string TrapScript;
         public Int32 VertexIndex;
         public Int16 VertexCount;
+        [NonSerialized]
         public array34 Unknown1;
         public string KeyItem;
+        [NonSerialized]
         public Int32 Unknown2;
         public IEString LockpickString;
+        [NonSerialized]
         public array56 Unknown3;
     }
 
@@ -283,8 +309,11 @@ namespace iiInfinityEngine.Core.Files
         public string Name;
         public Int16 XCoordinate;
         public Int16 YCoordinate;
+        public Int16 XCoordinateSec;
+        public Int16 YCoordinateSec;
         public Int16 Radius;
         public Int16 Height;
+        [NonSerialized]
         public array6 Unknown1;
         public Int16 Volume;
         public string Resref1;
@@ -298,13 +327,84 @@ namespace iiInfinityEngine.Core.Files
         public string Resref9;
         public string Resref10;
         public Int16 ResRefCount;
+        [NonSerialized]
         public Int16 Unknown2;
         public Int32 FrequencyBase;
         public Int32 FrequencyVariation;
-        public Int32 AmbientAppearenceSchedule;
-        public Int32 Flags;
+        public AmbientSchedule AmbientAppearenceSchedule;
+        public string AmbientAppearenceScheduleStr { get 
+            {
+                string Separator = ", ";
+                bool IsExactlyOneBitSet(int i)
+                {
+                    return i != 0 && (i & (i - 1)) == 0;
+                };
+                var str = new StringBuilder();
+
+                foreach (object i in Enum.GetValues(typeof(AmbientSchedule)))
+                {
+                    if (IsExactlyOneBitSet((int)i) &&
+                        AmbientAppearenceSchedule.HasFlag((Enum)i))
+                    {
+                        str.Append((AmbientSchedule)i + Separator);
+                    }
+                }
+
+                if (str.Length > 0)
+                {
+                    str.Length -= Separator.Length;
+                }
+
+                return str.ToString();
+            }
+    }
+        public AmbientFlags Flags;
+        [NonSerialized]
         public array64 Unknown3;
     }
+
+    [Serializable]
+    [Flags]
+    public enum AmbientFlags : Int32
+    {
+        Enabled = 0x00000001,
+        Looping = 0x00000002,
+        IgnoreRadius = 0x00000004,
+        RandomOrder = 0x00000008,
+        LowMemSounds1 = 0x00000010,
+    }
+
+    [Serializable]
+    [Flags]
+    public enum AmbientSchedule : Int32
+    {
+        From_0030_to_0129 = 1<<0,
+        From_0130_to_0229 = 1<<1,
+        From_0230_to_0329 = 1<<2,
+        From_0330_to_0429 = 1<<3,
+        From_0430_to_0529 = 1<<4,
+        From_0530_to_0629 = 1<<5,
+        From_0630_to_0729 = 1<<6,
+        From_0730_to_0829 = 1<<7,
+        From_0830_to_0929 = 1<<8,
+        From_0930_to_1029 = 1<<9,
+        From_1030_to_1129 = 1<<10,
+        From_1130_to_1229 = 1<<11,
+        From_1230_to_1329 = 1<<12,
+        From_1330_to_1429 = 1<<13,
+        From_1430_to_1529 = 1<<14,
+        From_1530_to_1629 = 1<<15,
+        From_1630_to_1729 = 1<<16,
+        From_1730_to_1829 = 1<<17,
+        From_1830_to_1929 = 1<<18,
+        From_1930_to_2029 = 1<<19,
+        From_2030_to_2129 = 1<<20,
+        From_2130_to_2229 = 1<<21,
+        From_2230_to_2329 = 1<<22,
+        From_2330_to_0029 = 1<<23,
+        ALL=-1
+    }
+
 
     [Serializable]
     public struct AreVariable2
@@ -359,6 +459,8 @@ namespace iiInfinityEngine.Core.Files
         public Int16 TrapDetected;
         public Int16 TrapLaunchXCoordinate;
         public Int16 TrapLaunchYCoordinate;
+        public Int16 TrapLaunchXCoordinateSec;
+        public Int16 TrapLaunchYCoordinateSec;
         public string KeyItem;
         public string DoorScript;
         public Int32 SecretDoorDetectionDifficulty;
@@ -371,6 +473,7 @@ namespace iiInfinityEngine.Core.Files
         public string TravelTriggerName;
         public IEString DialogName;
         public string DialogResref;
+        [NonSerialized]
         public array8 Unknown;
     }
 
@@ -380,6 +483,8 @@ namespace iiInfinityEngine.Core.Files
         public string Name;
         public Int16 XCoordinate;
         public Int16 YCoordinate;
+        public Int16 XCoordinateSec;
+        public Int16 YCoordinateSec;
         public Int32 AnimationAppearenceSchedule;
         public string BamAnimation;
         public Int16 BamSequence;
@@ -391,6 +496,7 @@ namespace iiInfinityEngine.Core.Files
         public byte LoopChance;
         public byte SkipCycles;
         public string Palette;
+        [NonSerialized]
         public Int32 Unknown;
     }
 
@@ -399,9 +505,12 @@ namespace iiInfinityEngine.Core.Files
     {
         public Int16 XCoordinate;
         public Int16 YCoordinate;
+        public Int16 XCoordinateSec;
+        public Int16 YCoordinateSec;
         public IEString Text;
         public Int16 Location;
         public Int16 Colour;
+        [NonSerialized]
         public array36 Unknown;
     }
 
@@ -409,12 +518,15 @@ namespace iiInfinityEngine.Core.Files
     public struct AreTiledObject2
     {
         public string Name;
+        [NonSerialized]
         public array32 Unknown1;
+        [NonSerialized]
         public Int32 Unknown2;
         public Int32 OpenSearchOffset;
         public Int32 OpenSearchCount;
         public Int32 ClosedSearchOffset;
         public Int32 ClosedSearchCount;
+        [NonSerialized]
         public array48 Unknown3;
     }
 
@@ -429,6 +541,8 @@ namespace iiInfinityEngine.Core.Files
         public Int16 TriggersRemaining;
         public Int16 XCoordinate;
         public Int16 YCoordinate;
+        public Int16 XCoordinateSec;
+        public Int16 YCoordinateSec;
         public Int16 ZCoordinate;
         public byte EATarget;
         public byte PartyOwnerIndex;
@@ -442,10 +556,15 @@ namespace iiInfinityEngine.Core.Files
         public Int32 WinSong;
         public Int32 BattleSong;
         public Int32 LoseSong;
+        [NonSerialized]
         public Int32 Unknown1;
+        [NonSerialized]
         public Int32 Unknown2;
+        [NonSerialized]
         public Int32 Unknown3;
+        [NonSerialized]
         public Int32 Unknown4;
+        [NonSerialized]
         public Int32 Unknown5;
         public string DayAmbient1Wav;
         public string DayAmbient2Wav;
@@ -454,6 +573,7 @@ namespace iiInfinityEngine.Core.Files
         public string NightAmbient2Wav;
         public Int32 NightAmbientVolume;
         public Int32 Reverb;
+        [NonSerialized]
         public array60 Unknown6;
     }
 
@@ -490,6 +610,7 @@ namespace iiInfinityEngine.Core.Files
         public Int16 Enabled;
         public Int16 DayProbability;
         public Int16 NightProbability;
+        [NonSerialized]
         public array56 Unknown;
     }
 
@@ -724,4 +845,5 @@ namespace iiInfinityEngine.Core.Files
         Barrel,
         Crate
     }
+
 }

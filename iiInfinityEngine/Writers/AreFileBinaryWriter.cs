@@ -246,8 +246,8 @@ namespace iiInfinityEngine.Core.Writers
             foreach (var ambient in areFile.ambients)
             {
                 AreAmbientBinary ambientBinary = new AreAmbientBinary();
-                ambientBinary.AmbientAppearenceSchedule = ambient.AmbientAppearenceSchedule;
-                ambientBinary.Flags = ambient.Flags;
+                ambientBinary.AmbientAppearenceSchedule = (Int32)ambient.AmbientAppearenceSchedule;
+                ambientBinary.Flags = (Int32)ambient.Flags;
                 ambientBinary.FrequencyBase = ambient.FrequencyBase;
                 ambientBinary.FrequencyVariation = ambient.FrequencyVariation;
                 ambientBinary.Height = ambient.Height;

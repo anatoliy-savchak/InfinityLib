@@ -27,9 +27,11 @@ namespace iiInfinityEngine.Core.Readers
         List<WmpFile> worldmaps = new List<WmpFile>();
         List<VvcFile> vvcs = new List<VvcFile>();
         List<DlgFile> dialogs = new List<DlgFile>();
+        List<BcsFile> bcss = new List<BcsFile>();
 
         public TlkFile TlkFile { get; set; }
         public Game game;
+        public JournaFile journaFile;
 
         public BifFile Read(Stream s, List<KeyBifResource2> resources, List<IEFileType> fileTypes)
         {
@@ -132,6 +134,8 @@ namespace iiInfinityEngine.Core.Readers
                                         {
                                             DlgFileBinaryReader reader = new DlgFileBinaryReader();
                                             reader.TlkFile = TlkFile;
+                                            reader.journaFile = journaFile;
+                                            reader.currentDlg = resource.ResourceName;
                                             var obj = reader.Read(ms);
                                             obj.Filename = resource.ResourceName + "." + resource.ResourceType;
                                             dialogs.Add(obj);
@@ -167,6 +171,22 @@ namespace iiInfinityEngine.Core.Readers
                                             Debug.WriteLine($"Loaded IDS: {identifier.Filename}");
                                         }
                                         identifiers.Add(identifier);
+                                    }
+                                    catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
+                                    break;
+
+                                case IEFileType.Bcs:
+                                    try
+                                    {
+                                        BcsFileReader reader = new BcsFileReader();
+                                        var fileObj = (BcsFile)reader.Read(ms);
+                                        resource = resources.Where(a => a.NonTileSetIndex == (f.resourceLocator & 0xFFF)).SingleOrDefault();
+                                        if (resource != null)
+                                        {
+                                            fileObj.Filename = resource.ResourceName + "." + resource.ResourceType;
+                                            Debug.WriteLine($"Loaded BCS: {fileObj.Filename}");
+                                        }
+                                        bcss.Add(fileObj);
                                     }
                                     catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
                                     break;

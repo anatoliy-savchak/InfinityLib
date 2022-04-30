@@ -10,11 +10,14 @@ namespace iiInfinityEngine.Core.Readers
     public class DlgFileBinaryReader : IDlgFileReader
     {
         public TlkFile TlkFile { get; set; }
+        public JournaFile journaFile;
+        public string currentDlg;
 
         public DlgFile Read(string filename)
         {
             using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
             {
+                currentDlg = filename;
                 var f = Read(fs);
                 f.Filename = Path.GetFileName(filename);
                 return f;
@@ -78,6 +81,13 @@ namespace iiInfinityEngine.Core.Readers
                     };
                     if (obj.Flags.HasFlag(DlgResponseFlags.HasText))
                         obj.Text = Common.ReadString(rec.StrRef, TlkFile);
+
+                    if (obj.Flags.HasFlag(DlgResponseFlags.HasJournal))
+                        if (journaFile != null && currentDlg != null)
+                        {
+                            journaFile.AddEntry(obj.JournalIndex, Common.ReadString(rec.JournalIndex, TlkFile).Text, currentDlg, i);
+                        }
+                      //  obj.JournalEntry = Common.ReadString(rec.JournalIndex, TlkFile).Text;
                     recs.Add(obj);
                 }
 

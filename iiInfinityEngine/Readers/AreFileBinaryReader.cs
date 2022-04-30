@@ -578,8 +578,8 @@ namespace iiInfinityEngine.Core.Readers
             foreach (var ambient in ambients)
             {
                 var ambient2 = new AreAmbient2();
-                ambient2.AmbientAppearenceSchedule = ambient.AmbientAppearenceSchedule;//xx
-                ambient2.Flags = ambient.Flags;//xx
+                ambient2.AmbientAppearenceSchedule = (AmbientSchedule)ambient.AmbientAppearenceSchedule;//xx
+                ambient2.Flags = (AmbientFlags)ambient.Flags;//xx
                 ambient2.FrequencyBase = ambient.FrequencyBase;
                 ambient2.FrequencyVariation = ambient.FrequencyVariation;
                 ambient2.Height = ambient.Height;

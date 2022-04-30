@@ -39,6 +39,7 @@ namespace iiInfinityEngine.Core
         public List<DlgFile> Dlgs = new List<DlgFile>();
 
         public TlkFile Tlk { get; private set; }
+        public JournaFile journaFile = new JournaFile();
 
         public Game()
         {
@@ -157,6 +158,7 @@ namespace iiInfinityEngine.Core
                 {
                     var bbr = new BifFileBinaryReader();
                     bbr.game = this;
+                    bbr.journaFile = journaFile;
                     using (var bifFileStream = new FileStream(bifName, FileMode.Open, FileAccess.Read))
                     {
                         bbr.TlkFile = Tlk;

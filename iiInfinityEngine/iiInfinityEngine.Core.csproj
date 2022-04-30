@@ -50,7 +50,9 @@
     <Compile Include="BackupManager.cs" />
     <Compile Include="Binary\DlgBinary.cs" />
     <Compile Include="Files\DlgFile.cs" />
+    <Compile Include="Files\BcsFile.cs" />
     <Compile Include="Readers\DlgFileBinaryReader.cs" />
+    <Compile Include="Readers\BcsFileReader.cs" />
     <Compile Include="Readers\Interfaces\IDlgFileReader.cs" />
     <Compile Include="Scripting\BcsCompiler.cs" />
     <Compile Include="Scripting\BcsDecompiler.cs" />
